@@ -3818,6 +3818,8 @@ input, select, textarea {
 		}
 
 		#twitch-embed {
+			margin-left: auto;
+ 			margin-right: auto;
 			height: 0;
 			position: relative;
 			overflow: hidden;
@@ -3827,9 +3829,11 @@ input, select, textarea {
 		  }
 		  
 		  #twitch-embed iframe {
+			margin-left: auto;
+ 			margin-right: auto;
 			position: absolute;
-			height: 80%;
-			width: 80%;
+			height: 100%;
+			width: 100%;
 		  }
 
 /* Main */
