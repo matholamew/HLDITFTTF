@@ -72,18 +72,66 @@
             }
 
             /* --- WINAMP STYLING --- */
-            #winamp-container {
+            #winamp-wrapper {
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            #winamp-container {
                 width: 300px;
                 background: #27273d;
                 border: 3px outset #4a4a7d;
                 padding: 8px;
-                z-index: 9999;
                 box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
                 color: #00ff00;
                 font-family: Arial, sans-serif;
+            }
+
+            /* Playlist styling */
+            #playlist-window {
+                width: 300px;
+                background: #000;
+                border: 3px outset #4a4a7d;
+                display: none; /* Hidden by default */
+                max-height: 150px;
+                overflow-y: auto;
+                padding: 5px;
+            }
+
+            .playlist-header {
+                background: #000080;
+                color: white;
+                font-size: 10px;
+                padding: 2px 5px;
+                text-align: center;
+                font-weight: bold;
+                border-bottom: 1px solid #4a4a7d;
+            }
+
+            .playlist-item {
+                font-size: 11px;
+                padding: 3px;
+                cursor: pointer;
+                color: #00ff00;
+                border-bottom: 1px solid #222;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .playlist-item:hover {
+                background: #3c3c5c;
+                color: #fff;
+            }
+
+            .playlist-item.active {
+                background: #000080;
+                color: #fff;
             }
 
             .winamp-title-bar {
@@ -328,36 +376,44 @@
     </head>
     <body>
 
-        <div id="winamp-container">
-            <div class="winamp-title-bar">
-                <span>WINAMP</span>
-                <span>_ &#9633; X</span>
+        <div id="winamp-wrapper">
+            <div id="playlist-window">
+                <div class="playlist-header">WINAMP PLAYLIST</div>
+                <div id="playlist-items">
+                    </div>
             </div>
-            <div class="winamp-display" id="display-area">
-                <div class="winamp-timer" id="timer">00:00</div>
-                <div class="winamp-visualizer">
-                    <div class="vis-bar" style="animation-delay: 0s"></div>
-                    <div class="vis-bar" style="animation-delay: 0.1s"></div>
-                    <div class="vis-bar" style="animation-delay: 0.2s"></div>
-                    <div class="vis-bar" style="animation-delay: 0.3s"></div>
-                    <div class="vis-bar" style="animation-delay: 0.4s"></div>
+
+            <div id="winamp-container">
+                <div class="winamp-title-bar">
+                    <span>WINAMP</span>
+                    <span>_ &#9633; X</span>
                 </div>
-                <marquee class="winamp-marquee" id="now-playing" scrollamount="3">Winamp 2.91 - Nullsoft</marquee>
-            </div>
+                <div class="winamp-display" id="display-area">
+                    <div class="winamp-timer" id="timer">00:00</div>
+                    <div class="winamp-visualizer">
+                        <div class="vis-bar" style="animation-delay: 0s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.1s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.2s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.3s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.4s"></div>
+                    </div>
+                    <marquee class="winamp-marquee" id="now-playing" scrollamount="3">Winamp 2.91 - Nullsoft</marquee>
+                </div>
 
-            <div class="winamp-vol-container">
-                <span>VOL:</span>
-                <input type="range" class="winamp-vol-slider" id="volume-control" min="0" max="1" step="0.01" value="0.4">
-            </div>
+                <div class="winamp-vol-container">
+                    <span>VOL:</span>
+                    <input type="range" class="winamp-vol-slider" id="volume-control" min="0" max="1" step="0.01" value="0.4">
+                </div>
 
-            <div class="winamp-controls">
-                <button class="winamp-btn" onclick="playMusic()">PLAY</button>
-                <button class="winamp-btn" onclick="pauseMusic()">PAUSE</button>
-                <button class="winamp-btn" onclick="stopMusic()">STOP</button>
-                <button class="winamp-btn btn-special" onclick="loadRandomSong()">NEXT</button>
-                <button class="winamp-btn btn-special" onclick="loadRandomSong()">SHUFFLE</button>
+                <div class="winamp-controls">
+                    <button class="winamp-btn" onclick="playMusic()">PLAY</button>
+                    <button class="winamp-btn" onclick="pauseMusic()">PAUSE</button>
+                    <button class="winamp-btn" onclick="stopMusic()">STOP</button>
+                    <button class="winamp-btn btn-special" onclick="loadNextSong()">NEXT</button>
+                    <button class="winamp-btn btn-special" onclick="togglePlaylist()">LIST</button>
+                </div>
+                <audio id="bg-audio"></audio>
             </div>
-            <audio id="bg-audio" loop></audio>
         </div>
 
         <div class="construction-bar"></div>
@@ -474,19 +530,59 @@
 
             // --- WINAMP LOGIC ---
             const playlist = [
-                { name: "AMERICA - Nedini", url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" },
-                { name: "LockedNLoaded - Metalus", url: "https://media.howlongdoesittakefortechtofinish.com/songs/LockedNLoaded%20-%20Metalus.mp3" },
-                { name: "Bussy Bounce - Metalus", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Metalus_-_Bussy_Bounce.mp3" }
+                { name: "AMERICA - nedini_", url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" },
+                { name: "LockedNLoaded - Metalus69", url: "https://media.howlongdoesittakefortechtofinish.com/songs/LockedNLoaded%20-%20Metalus.mp3" },
+                { name: "Bussy Bounce - Metalus69", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Metalus_-_Bussy_Bounce.mp3" },
+                { name: "Big Nut - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Big%20Nut%20-%20FabulousCuddle.mp3" },
+                { name: "Moon Beam Ice Cream 2 - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Moon%20Beam%20Ice%20Cream2%20-%20FabulousCuddle.mp3" },
+                { name: "The Baby Stairs - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Baby%20Stairs%20-%20FabulousCuddle.mp3" },
             ];
 
+            let currentTrackIndex = 0;
             const audio = document.getElementById('bg-audio');
             const display = document.getElementById('now-playing');
             const timer = document.getElementById('timer');
             const container = document.getElementById('display-area');
             const volSlider = document.getElementById('volume-control');
+            const playlistWindow = document.getElementById('playlist-window');
+            const playlistItemsContainer = document.getElementById('playlist-items');
+
+            // Initialize Playlist UI
+            function initPlaylist() {
+                playlistItemsContainer.innerHTML = '';
+                playlist.forEach((track, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'playlist-item';
+                    div.id = 'track-' + index;
+                    div.innerText = (index + 1) + ". " + track.name;
+                    div.onclick = () => playSpecificTrack(index);
+                    playlistItemsContainer.appendChild(div);
+                });
+            }
+
+            function togglePlaylist() {
+                playlistWindow.style.display = (playlistWindow.style.display === 'block') ? 'none' : 'block';
+            }
+
+            function playSpecificTrack(index) {
+                currentTrackIndex = index;
+                const track = playlist[index];
+                audio.src = track.url;
+                display.innerText = track.name;
+                
+                // Update highlighting
+                document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
+                document.getElementById('track-' + index).classList.add('active');
+                
+                playMusic();
+            }
+
+            function loadNextSong() {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                playSpecificTrack(currentTrackIndex);
+            }
 
             audio.volume = 0.4;
-
             volSlider.addEventListener('input', (e) => {
                 audio.volume = e.target.value;
             });
@@ -497,16 +593,11 @@
                 timer.innerText = (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
             });
 
-            function loadRandomSong() {
-                const track = playlist[Math.floor(Math.random() * playlist.length)];
-                audio.src = track.url;
-                display.innerText = track.name;
-                audio.load();
-                if (!audio.paused) { playMusic(); }
-            }
+            // Auto-play next song when one ends
+            audio.addEventListener('ended', loadNextSong);
 
             function playMusic() {
-                audio.play();
+                audio.play().catch(e => console.log("User interaction needed for audio"));
                 container.classList.add('playing');
             }
 
@@ -521,8 +612,10 @@
                 container.classList.remove('playing');
             }
 
-            loadRandomSong();
+            // Start up
+            initPlaylist();
+            playSpecificTrack(0);
+            pauseMusic(); // Don't autoplay on load to respect browser policies
         </script>
     </body>
 </html>
-
