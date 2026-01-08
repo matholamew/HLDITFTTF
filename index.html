@@ -8,84 +8,259 @@
         
         <style>
             body {
-                background-color: #000;
+                background-color: #000000;
                 background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-                color: #fff;
+                color: #ffffff;
                 font-family: "Comic Sans MS", cursive;
-                margin: 0; padding: 0; overflow-x: hidden;
+                margin: 0;
+                padding: 0;
+                overflow-x: hidden;
             }
 
-            /* --- IDLE FADE TRAIL --- */
+            html { cursor: url('https://cur.cursors-4u.net/anime/ani-1/ani11.cur'), auto; }
+
+            /* --- CURSOR TRAIL STYLE --- */
             .cursor-trail {
                 position: fixed;
                 top: 0; left: 0;
                 width: 20px; 
                 height: 20px;
                 pointer-events: none;
-                z-index: 10000;
-                transition: transform 0.05s linear, opacity 0.5s ease;
-                opacity: 0; /* Hidden by default until move */
+                z-index: 10001;
+                transition: opacity 0.5s ease;
+                opacity: 0;
+            }
+
+            header {
+                background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif');
+                background-size: cover;
+                background-position: bottom;
+                padding: 120px 20px; 
+                text-align: center;
+                border-bottom: 5px solid yellow;
+            }
+
+            .fire-text {
+                font-size: 85px; 
+                font-weight: bold;
+                color: white;
+                text-shadow: -4px -4px 0 #000, 4px -4px 0 #000, -4px  4px 0 #000, 4px  4px 0 #000, 0 0 30px #ff0000; 
+                animation: flicker 0.1s infinite;
+                letter-spacing: 5px;
+            }
+
+            @keyframes flicker {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.01); }
+                100% { transform: scale(1); }
+            }
+
+            .main-table {
+                width: 90%;
+                max-width: 900px;
+                margin: 20px auto;
+                background: #c0c0c0;
+                color: #000;
+                border: 10px ridge #eee;
+                padding: 15px;
+            }
+
+            .inner-content {
+                border: 2px inset #fff;
+                background: #fff;
+                padding: 20px;
+            }
+
+            h2 {
+                background: linear-gradient(to right, #000080, #1e90ff);
+                color: white;
+                padding: 5px;
+                text-align: center;
+                font-size: 18px;
             }
 
             /* --- WINAMP STYLING --- */
             #winamp-wrapper {
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                pointer-events: none; z-index: 9999;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 9999;
             }
 
             .draggable-window {
-                position: absolute; user-select: none; pointer-events: auto;
-                box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
+                position: absolute;
+                user-select: none;
+                pointer-events: auto;
             }
 
             #winamp-container {
-                width: 300px; background: #27273d; border: 3px outset #4a4a7d;
-                padding: 8px; color: #00ff00; font-family: Arial, sans-serif;
-                top: 50px; left: 50px;
+                width: 300px;
+                background: #27273d;
+                border: 3px outset #4a4a7d;
+                padding: 8px;
+                box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
+                color: #00ff00;
+                font-family: Arial, sans-serif;
+                top: 50px;
+                left: 50px;
             }
 
             #playlist-window {
-                width: 300px; background: #000; border: 3px outset #4a4a7d;
-                display: none; height: 200px; padding: 5px;
-                top: 204px; left: 50px; /* Snapped to bottom of main player */
+                width: 300px;
+                background: #000;
+                border: 3px outset #4a4a7d;
+                display: none;
+                max-height: 200px;
+                padding: 5px;
+                top: 204px; /* Snapped position */
+                left: 50px;
             }
 
-            .winamp-title-bar, .playlist-header {
-                background: #000080; color: white; font-size: 10px;
-                padding: 2px 5px; font-weight: bold; border-bottom: 1px solid #4a4a7d;
-                cursor: grab; display: flex; justify-content: space-between;
+            #playlist-items {
+                max-height: 150px;
+                overflow-y: auto;
             }
 
-            #playlist-items { height: 155px; overflow-y: scroll; scrollbar-width: thin; }
+            .playlist-header, .winamp-title-bar {
+                background: #000080;
+                color: white;
+                font-size: 10px;
+                padding: 2px 5px;
+                font-weight: bold;
+                border-bottom: 1px solid #4a4a7d;
+                cursor: grab;
+            }
+            
+            .playlist-header:active, .winamp-title-bar:active {
+                cursor: grabbing;
+            }
 
             .playlist-item {
-                font-size: 11px; padding: 3px; cursor: pointer; color: #00ff00;
-                border-bottom: 1px solid #222; white-space: nowrap; overflow: hidden;
+                font-size: 11px;
+                padding: 3px;
+                cursor: pointer;
+                color: #00ff00;
+                border-bottom: 1px solid #222;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            .playlist-item:hover { background: #3c3c5c; }
+            .playlist-item:hover { background: #3c3c5c; color: #fff; }
             .playlist-item.active { background: #000080; color: #fff; }
 
             .winamp-display {
-                background: #000; border: 2px inset #444; padding: 5px;
-                height: 50px; position: relative; overflow: hidden;
+                background: #000;
+                border: 2px inset #444;
+                padding: 5px;
+                height: 50px;
+                position: relative;
+                overflow: hidden;
             }
 
-            .winamp-timer { font-size: 24px; font-family: 'Courier New'; color: #00ff00; }
-            .winamp-marquee { font-size: 10px; color: #00ff00; position: absolute; bottom: 5px; width: 100%; }
+            .winamp-timer {
+                font-size: 24px;
+                font-family: 'Courier New', Courier, monospace;
+                color: #00ff00;
+                text-shadow: 0 0 5px #00ff00;
+            }
+
+            .winamp-marquee {
+                font-size: 10px;
+                color: #00ff00;
+                white-space: nowrap;
+                position: absolute;
+                bottom: 5px;
+                width: 100%;
+            }
+
+            .winamp-visualizer {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                width: 60px;
+                height: 20px;
+                display: flex;
+                align-items: flex-end;
+                gap: 1px;
+            }
+
+            .vis-bar { width: 4px; background: #00ff00; height: 2px; }
+            .playing .vis-bar { animation: vis-bounce 0.5s infinite alternate; }
+
+            @keyframes vis-bounce { from { height: 2px; } to { height: 15px; } }
+
+            .winamp-vol-container {
+                margin: 8px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 10px;
+                color: #fff;
+            }
+
+            .winamp-vol-slider {
+                flex-grow: 1;
+                -webkit-appearance: none;
+                background: #000;
+                height: 6px;
+                border: 1px solid #444;
+                outline: none;
+            }
+
+            .winamp-vol-slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 15px; height: 10px;
+                background: #3c3c5c; border: 1px outset #6b6b9e;
+                cursor: pointer;
+            }
+
+            .winamp-controls { display: flex; flex-direction: column; gap: 4px; }
+            .control-row { display: flex; justify-content: space-between; gap: 2px; }
 
             .winamp-btn {
-                background: #3c3c5c; border: 2px outset #6b6b9e; color: white;
-                font-size: 12px; padding: 6px 2px; flex: 1; cursor: pointer;
+                background: #3c3c5c;
+                border: 2px outset #6b6b9e;
+                color: white;
+                font-size: 12px;
+                padding: 6px 2px;
+                flex: 1;
+                cursor: pointer;
+                font-weight: bold;
+                text-transform: uppercase;
+                min-width: 42px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
-            #shuffle-toggle-btn.active { color: #ffff00; border-color: #ffff00; }
+            .winamp-btn:active { border: 2px inset #6b6b9e; }
+            .btn-wide { flex: none; width: 100%; }
 
-            .control-row { display: flex; gap: 2px; margin-top: 5px; }
-            .winamp-vol-slider { width: 100%; accent-color: #00ff00; }
-            
-            .main-table { width: 90%; max-width: 800px; margin: 50px auto; background: #c0c0c0; border: 10px ridge #eee; padding: 15px; color: #000; }
-            .inner-content { border: 2px inset #fff; background: #fff; padding: 20px; text-align: center; }
+            #shuffle-toggle-btn.active {
+                color: #ffff00;
+                border-color: #ffff00;
+                background: #4a4a7d;
+            }
+
+            .tech-jams-section { background: #444; border: 4px ridge #ff00ff; padding: 10px; margin-top: 20px; }
+            .jam-description { color: white; font-size: 14px; text-align: center; margin-bottom: 15px; line-height: 1.4; }
+            .jam-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 10px; }
+            .jam-item { background: #000; border: 3px inset #888; padding: 5px; width: 320px; }
+            .jam-item video { width: 100%; display: block; background: black; }
+            .jam-caption { color: #00ff00; font-size: 12px; text-align: center; padding: 5px 0; font-family: 'Courier New', monospace; }
+            .jam-controls-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; padding: 0 5px; }
+            .jam-vol-label { color: #fff; font-size: 10px; white-space: nowrap; }
+            .jam-slider { flex-grow: 1; cursor: pointer; }
+            .jam-mute-btn { background: #333; color: #fff; border: 1px outset #999; font-size: 9px; padding: 2px 4px; cursor: pointer; min-width: 55px; }
+            .social-box { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+            .social-icon { min-width: 40px; height: 32px; padding: 0 10px; background: yellow; border: 2px outset #fff; display: flex; align-items: center; justify-content: center; color: black; text-decoration: none; font-weight: bold; font-size: 12px; }
+            .rainbow-hr { height: 12px; background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); border: 2px solid #000; margin: 20px 0; }
+            #counter-box { background: #000; color: #ff0000; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; border: 3px inset #555; font-size: 24px; display: inline-block; }
+            .construction-bar { width: 100%; height: 20px; background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px); }
         </style>
     </head>
     <body>
@@ -93,109 +268,254 @@
         <div id="trail-container"></div>
 
         <div id="winamp-wrapper">
-            <div id="winamp-container" class="draggable-window">
-                <div class="winamp-title-bar" id="player-handle">
-                    <span>WINAMP 2.91</span>
-                    <span>_ &#9633; X</span>
-                </div>
-                <div class="winamp-display">
-                    <div class="winamp-timer" id="timer">00:00</div>
-                    <marquee class="winamp-marquee" id="now-playing">Stop Looking Think...</marquee>
-                </div>
-                <input type="range" class="winamp-vol-slider" id="volume-control" min="0" max="1" step="0.01" value="0.4">
-                <div class="control-row">
-                    <button class="winamp-btn" onclick="loadPrevSong()">&#9198;</button>
-                    <button class="winamp-btn" id="play-pause-btn" onclick="handlePlayPause()">&#9654;</button>
-                    <button class="winamp-btn" onclick="stopMusic()">&#9632;</button>
-                    <button class="winamp-btn" onclick="loadNextSong()">&#9197;</button>
-                </div>
-                <button class="winamp-btn" style="width:100%; margin-top:5px;" onclick="togglePlaylist()">LIST</button>
-            </div>
-
             <div id="playlist-window" class="draggable-window">
-                <div class="playlist-header" id="playlist-handle">
-                    <span>PLAYLIST</span>
-                    <button id="shuffle-toggle-btn" onclick="toggleShuffle()" style="font-size:9px;">SHUFFLE: OFF</button>
+                <div class="playlist-header" id="playlist-handle" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>WINAMP PLAYLIST</span>
+                    <button id="shuffle-toggle-btn" onclick="toggleShuffle()" style="font-size: 8px; cursor: pointer; background: #3c3c5c; color: white; border: 1px outset #6b6b9e; padding: 1px 3px;">SHUFFLE: OFF</button>
                 </div>
                 <div id="playlist-items"></div>
             </div>
-            <audio id="bg-audio"></audio>
-        </div>
 
-        <div class="main-table">
-            <div class="inner-content">
-                <h1 style="background: blue; color: white;">TECHSMITH'S LAIR</h1>
-                <img src="https://media.howlongdoesittakefortechtofinish.com/images/torpesharpebysnaj.png" width="80" alt="TorpeSharpe">
-                <p>Move your mouse to summon the TorpeSharpe trail. Stop moving to let them rest.</p>
+            <div id="winamp-container" class="draggable-window">
+                <div class="winamp-title-bar" id="player-handle">
+                    <span>WINAMP</span>
+                    <span>_ &#9633; X</span>
+                </div>
+                <div class="winamp-display" id="display-area">
+                    <div class="winamp-timer" id="timer">00:00</div>
+                    <div class="winamp-visualizer">
+                        <div class="vis-bar" style="animation-delay: 0s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.1s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.2s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.3s"></div>
+                        <div class="vis-bar" style="animation-delay: 0.4s"></div>
+                    </div>
+                    <marquee class="winamp-marquee" id="now-playing" scrollamount="3">Winamp 2.91 - Nullsoft</marquee>
+                </div>
+
+                <div class="winamp-vol-container">
+                    <span>VOL:</span>
+                    <input type="range" class="winamp-vol-slider" id="volume-control" min="0" max="1" step="0.01" value="0.4">
+                </div>
+
+                <div class="winamp-controls">
+                    <div class="control-row">
+                        <button class="winamp-btn" onclick="loadPrevSong()" title="Previous">&#9198;</button>
+                        <button class="winamp-btn" id="play-pause-btn" onclick="handlePlayPause()" title="Play/Pause">&#9654;</button>
+                        <button class="winamp-btn" onclick="stopMusic()" title="Stop">&#9632;</button>
+                        <button class="winamp-btn" onclick="loadNextSong()" title="Next">&#9197;</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="winamp-btn btn-wide" onclick="togglePlaylist()">LIST</button>
+                    </div>
+                </div>
+                <audio id="bg-audio"></audio>
             </div>
         </div>
 
+        <div class="construction-bar"></div>
+        <marquee bg-color="red" style="color:white; font-weight:bold;">
+            *** BREAKING NEWS! TECH IS STILL A BUTT! *** BUT YOU ALREADY KNEW THAT. *** DON'T FORGET TO SIGN THE GUESTBOOK ***
+        </marquee>
+
+        <header id="header">
+            <div class="fire-text">HLDITFTTF?</div>
+        </header>
+
+        <center>
+            <div class="main-table">
+                <div class="inner-content">
+                    <h2>.: TECHSMITH'S VIRTUAL LAIR :.</h2>
+                    <img style="display:block; margin: 0 auto; border: 5px solid #00ff00;" src="/images/android-chrome-512x512.png" alt="techsHMPH" width="150" height="150"/>
+                    <p align="center"><b>Welcome to the <font color="blue">#1 Techsmith314 Fan Site</font>!</b></p>
+                    <div class="rainbow-hr"></div>
+                    <p>Is he still playing Vampire Therapist? <b>YES.</b> Has he finished? <b>NO.</b> Grab a Capri Sun and watch the struggle below.</p>
+                </div>
+
+                <section id="cta">
+                    <div id="twitch-embed"></div>
+                    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+                    <script type="text/javascript">
+                    new Twitch.Embed("twitch-embed", {
+                        width: "100%", height: "400", channel: "techsmith314",
+                        parent: ["howlongdoesittakefortechtofinish.com", "www.howlongdoesittakefortechtofinish.com"]
+                    });
+                    </script>
+                </section>
+
+                <section class="tech-jams-section">
+                    <marquee behavior="alternate" scrollamount="3"><font color="#ff00ff" size="4"><b>.: TechJams :.</b></font></marquee>
+                    <div class="jam-description"><b>Tech Jam</b> is an annual event where folks from the community make a fun little song and then I play them all on stream.</div>
+                    <div class="jam-grid">
+                        <div class="jam-item">
+                            <video id="jam-vid-1" autoplay loop muted playsinline preload="auto">
+                                <source src="https://media.howlongdoesittakefortechtofinish.com/videos/ONI_Tech_Jam.mp4" type="video/mp4">
+                            </video>
+                            <div class="jam-caption">ONI_Tech_Jam.mp4</div>
+                            <div class="jam-controls-row">
+                                <span class="jam-vol-label">VOL:</span>
+                                <input type="range" class="jam-slider" id="jam-vol-slider-1" min="0" max="1" step="0.01" value="0">
+                                <button class="jam-mute-btn" id="jam-mute-btn-1" onclick="toggleJamMute()">UNMUTE</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="rainbow-hr"></div>
+
+                <footer id="footer">
+                    <center>
+                        <div class="social-box">
+                            <a href="https://www.twitch.tv/techsmith314" class="social-icon" target="_blank">Twitch</a>
+                            <a href="https://www.youtube.com/@Techsmith314" class="social-icon" target="_blank">Main Youtube</a>
+                            <a href="https://www.youtube.com/@Techsmith314TV" class="social-icon" target="_blank">VODs Youtube</a>
+                            <a href="https://www.discord.com/users/techsmith314" class="social-icon" target="_blank">Discord</a>
+                        </div>
+                        <br>
+                        <b>VISITOR NUMBER:</b><br>
+                        <div id="counter-box">000420</div>
+                        <br><br>
+                        <font size="1">Copyright 2026 - Optimized for Netscape Navigator</font>
+                    </center>
+                </footer>
+            </div>
+        </center>
+
+        <div class="construction-bar"></div>
+
         <script>
-            // --- CURSOR TRAIL LOGIC WITH FADE ---
+            // --- TRAIL LOGIC ---
             const trailCount = 6;
-            const trailImage = "https://media.howlongdoesittakefortechtofinish.com/images/torpesharpebysnaj.png";
+            const trailImgSrc = "https://media.howlongdoesittakefortechtofinish.com/images/torpesharpebysnaj.png";
             const dots = [];
-            const mouse = { x: 0, y: 0 };
-            let idleTimer;
+            const mousePos = { x: 0, y: 0 };
+            let trailIdleTimer;
 
             for (let i = 0; i < trailCount; i++) {
                 const img = document.createElement('img');
-                img.src = trailImage;
+                img.src = trailImgSrc;
                 img.className = 'cursor-trail';
                 document.getElementById('trail-container').appendChild(img);
                 dots.push({ x: 0, y: 0, element: img });
             }
 
             window.addEventListener('mousemove', e => {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-                
-                // Show trail
-                dots.forEach((dot, i) => {
-                    dot.element.style.opacity = (0.7 - (i * 0.1));
-                });
-
-                // Clear existing timer and set new one to hide trail
-                clearTimeout(idleTimer);
-                idleTimer = setTimeout(() => {
+                mousePos.x = e.clientX;
+                mousePos.y = e.clientY;
+                dots.forEach((dot, i) => dot.element.style.opacity = (0.7 - (i * 0.1)));
+                clearTimeout(trailIdleTimer);
+                trailIdleTimer = setTimeout(() => {
                     dots.forEach(dot => dot.element.style.opacity = 0);
                 }, 1000);
             });
 
             function updateTrail() {
-                let x = mouse.x;
-                let y = mouse.y;
+                let x = mousePos.x;
+                let y = mousePos.y;
                 dots.forEach((dot, index) => {
                     dot.x += (x - dot.x) * 0.35;
                     dot.y += (y - dot.y) * 0.35;
-                    dot.element.style.transform = `translate(${dot.x + 10}px, ${dot.y + 10}px)`;
+                    dot.element.style.left = (dot.x + 10) + "px";
+                    dot.element.style.top = (dot.y + 10) + "px";
                     x = dot.x; y = dot.y;
                 });
                 requestAnimationFrame(updateTrail);
             }
             updateTrail();
 
-            // --- MUSIC & SNAP LOGIC ---
-            const audio = document.getElementById('bg-audio');
-            const playlistItemsContainer = document.getElementById('playlist-items');
-            const originalPlaylist = [
+            // Visitor Counter
+            let count = localStorage.getItem('visitorCount') || 420;
+            count = parseInt(count) + 1;
+            localStorage.setItem('visitorCount', count);
+            document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
+
+            // --- DRAG & SNAP LOGIC ---
+            let highestZ = 9999;
+            let isSnapped = true; 
+            const mainWin = document.getElementById("winamp-container");
+            const listWin = document.getElementById("playlist-window");
+
+            function makeDraggable(element, handle) {
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                handle.onmousedown = (e) => {
+                    e.preventDefault();
+                    highestZ++;
+                    element.style.zIndex = highestZ;
+                    pos3 = e.clientX; pos4 = e.clientY;
+                    
+                    document.onmousemove = (e) => {
+                        pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+                        pos3 = e.clientX; pos4 = e.clientY;
+                        
+                        let newTop = element.offsetTop - pos2;
+                        let newLeft = element.offsetLeft - pos1;
+                        element.style.top = newTop + "px";
+                        element.style.left = newLeft + "px";
+
+                        // If moving main player, pull snapped playlist
+                        if (element === mainWin && isSnapped) {
+                            listWin.style.top = (newTop + mainWin.offsetHeight) + "px";
+                            listWin.style.left = newLeft + "px";
+                        }
+
+                        // If moving playlist, check for snap to main player
+                        if (element === listWin) {
+                            const dY = Math.abs(newTop - (mainWin.offsetTop + mainWin.offsetHeight));
+                            const dX = Math.abs(newLeft - mainWin.offsetLeft);
+                            if (dY < 25 && dX < 25) {
+                                element.style.top = (mainWin.offsetTop + mainWin.offsetHeight) + "px";
+                                element.style.left = mainWin.offsetLeft + "px";
+                                isSnapped = true;
+                            } else {
+                                isSnapped = false;
+                            }
+                        }
+                    };
+                    document.onmouseup = () => { document.onmousemove = null; };
+                };
+            }
+            makeDraggable(mainWin, document.getElementById("player-handle"));
+            makeDraggable(listWin, document.getElementById("playlist-handle"));
+
+            // --- WINAMP LOGIC ---
+            const playlist = [
                 { name: "AMERICA - nedini_", url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" },
                 { name: "LockedNLoaded - Metalus69", url: "https://media.howlongdoesittakefortechtofinish.com/songs/LockedNLoaded%20-%20Metalus.mp3" },
-                { name: "The Struggle - shay_the_skunk", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Struggle%20(Stop%20Look%20Think)%20-%20Shay%20the%20Skunk.mp3" },
-                { name: "Man Clam - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Techsmith314_-_Man_Clam.mp3" }
+                { name: "Bussy Bounce - Metalus69", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Metalus_-_Bussy_Bounce.mp3" },
+                { name: "Big Nut - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Big%20Nut%20-%20FabulousCuddle.mp3" },
+                { name: "Moon Beam Ice Cream 2 - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Moon%20Beam%20Ice%20Cream2%20-%20FabulousCuddle.mp3" },
+                { name: "The Baby Stairs - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Baby%20Stairs%20-%20FabulousCuddle.mp3" },
+                { name: "Oddly Sexual - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Oddly%20Sexual%20-%20BagOfBurritos.mp3" },
+                { name: "Uh Fuck - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Uh%20Fuck%20-%20BagOfBurritos.mp3" },
+                { name: "The Struggle (Stop Look Think) - shay_the_skunk", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Struggle%20(Stop%20Look%20Think)%20-%20Shay%20the%20Skunk.mp3" },
+                { name: "Song of Gawks - eurobeatviking", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Song%20of%20Gawks%20-%20Eurobeatviking.mp3" },
+                { name: "Madness - bucho54", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Madness%20-%20bucho54.mp3" },
+                { name: "Pog in the P Grampaw - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Pog%20in%20the%20P%20Grampaw%20-%20Techsmith314.mp3" },
+                { name: "Self Esteem - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Self%20Esteem%20-%20Techsmith314.mp3" },
+                { name: "Man Clam - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Techsmith314_-_Man_Clam.mp3" },
+                { name: "Lady Bigfoot - Vercingetorix4", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Lady%20Bigfoot%20-%20Vercingetorix.mp3" },
+                { name: "Techfire 9000 - Vercingetorix4", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Techfire%209000%20-%20Vercingetorix.mp3" }
             ];
 
-            let currentPlaylist = [...originalPlaylist];
             let currentIndex = 0;
             let isShuffle = false;
-            let isSnapped = true;
+            const audio = document.getElementById('bg-audio');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const display = document.getElementById('now-playing');
+            const timer = document.getElementById('timer');
+            const container = document.getElementById('display-area');
+            const volSlider = document.getElementById('volume-control');
+            const playlistWindow = document.getElementById('playlist-window');
+            const playlistItemsContainer = document.getElementById('playlist-items');
+            const shuffleBtn = document.getElementById('shuffle-toggle-btn');
 
             function renderPlaylistUI() {
                 playlistItemsContainer.innerHTML = '';
-                currentPlaylist.forEach((track, i) => {
+                playlist.forEach((track, i) => {
                     const div = document.createElement('div');
                     div.className = 'playlist-item' + (i === currentIndex ? ' active' : '');
-                    div.innerText = `${i + 1}. ${track.name}`;
+                    div.id = 'track-' + i;
+                    div.innerText = (i + 1) + ". " + track.name;
                     div.onclick = () => playTrack(i);
                     playlistItemsContainer.appendChild(div);
                 });
@@ -203,81 +523,81 @@
 
             function playTrack(index) {
                 currentIndex = index;
-                audio.src = currentPlaylist[index].url;
-                document.getElementById('now-playing').innerText = (isShuffle ? "🔀 " : "") + currentPlaylist[index].name;
+                audio.src = playlist[index].url;
+                let shuffleTag = isShuffle ? "[SHUFFLE] " : "";
+                display.innerText = shuffleTag + (index + 1) + ". " + playlist[index].name;
                 renderPlaylistUI();
-                audio.play();
-                document.getElementById('play-pause-btn').innerHTML = "&#10074;&#10074;";
+                const activeEl = document.getElementById('track-' + index);
+                if (activeEl) activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                playMusic();
+            }
+
+            function handlePlayPause() {
+                if (audio.paused) playMusic();
+                else pauseMusic();
+            }
+
+            function playMusic() {
+                audio.play().catch(() => console.log("Interaction needed"));
+                container.classList.add('playing');
+                playPauseBtn.innerHTML = "&#10074;&#10074;";
+            }
+
+            function pauseMusic() {
+                audio.pause();
+                container.classList.remove('playing');
+                playPauseBtn.innerHTML = "&#9654;";
+            }
+
+            function stopMusic() {
+                audio.pause();
+                audio.currentTime = 0;
+                container.classList.remove('playing');
+                playPauseBtn.innerHTML = "&#9654;";
+            }
+
+            function loadNextSong() {
+                if (isShuffle) {
+                    let next;
+                    do { next = Math.floor(Math.random() * playlist.length); } while (next === currentIndex && playlist.length > 1);
+                    playTrack(next);
+                } else {
+                    playTrack((currentIndex + 1) % playlist.length);
+                }
+            }
+
+            function loadPrevSong() {
+                let prev = currentIndex - 1;
+                if (prev < 0) prev = playlist.length - 1;
+                playTrack(prev);
             }
 
             function toggleShuffle() {
                 isShuffle = !isShuffle;
-                const btn = document.getElementById('shuffle-toggle-btn');
-                const currentTrack = currentPlaylist[currentIndex];
-                if (isShuffle) {
-                    btn.innerText = "SHUFFLE: ON";
-                    btn.classList.add('active');
-                    currentPlaylist = [...currentPlaylist].sort(() => Math.random() - 0.5);
-                } else {
-                    btn.innerText = "SHUFFLE: OFF";
-                    btn.classList.remove('active');
-                    currentPlaylist = [...originalPlaylist];
-                }
-                currentIndex = currentPlaylist.indexOf(currentTrack);
-                renderPlaylistUI();
+                shuffleBtn.classList.toggle('active');
+                shuffleBtn.innerText = "SHUFFLE: " + (isShuffle ? "ON" : "OFF");
+                let shuffleTag = isShuffle ? "[SHUFFLE] " : "";
+                display.innerText = shuffleTag + (currentIndex + 1) + ". " + playlist[currentIndex].name;
             }
 
-            const main = document.getElementById('winamp-container');
-            const list = document.getElementById('playlist-window');
-            
-            function initDraggable(el, handle) {
-                let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
-                handle.onmousedown = (e) => {
-                    p3 = e.clientX; p4 = e.clientY;
-                    document.onmousemove = (e) => {
-                        p1 = p3 - e.clientX; p2 = p4 - e.clientY;
-                        p3 = e.clientX; p4 = e.clientY;
-                        let nTop = el.offsetTop - p2;
-                        let nLeft = el.offsetLeft - p1;
-                        el.style.top = nTop + "px";
-                        el.style.left = nLeft + "px";
-                        if (el === main && isSnapped) {
-                            list.style.top = (nTop + main.offsetHeight) + "px";
-                            list.style.left = nLeft + "px";
-                        }
-                        if (el === list) {
-                            const dY = Math.abs(nTop - (main.offsetTop + main.offsetHeight));
-                            const dX = Math.abs(nLeft - main.offsetLeft);
-                            if (dY < 25 && dX < 25) {
-                                el.style.top = (main.offsetTop + main.offsetHeight) + "px";
-                                el.style.left = main.offsetLeft + "px";
-                                isSnapped = true;
-                            } else { isSnapped = false; }
-                        }
-                    };
-                    document.onmouseup = () => { document.onmousemove = null; };
-                };
+            function togglePlaylist() {
+                const isHidden = (playlistWindow.style.display === 'none' || playlistWindow.style.display === '');
+                playlistWindow.style.display = isHidden ? 'block' : 'none';
+                if (isHidden) { highestZ++; playlistWindow.style.zIndex = highestZ; }
             }
 
-            initDraggable(main, document.getElementById('player-handle'));
-            initDraggable(list, document.getElementById('playlist-handle'));
+            volSlider.addEventListener('input', (e) => audio.volume = e.target.value);
+            audio.addEventListener('timeupdate', () => {
+                let m = Math.floor(audio.currentTime / 60);
+                let s = Math.floor(audio.currentTime % 60);
+                timer.innerText = (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
+            });
+            audio.addEventListener('ended', loadNextSong);
 
-            function handlePlayPause() {
-                if (audio.paused) { audio.play(); document.getElementById('play-pause-btn').innerHTML = "&#10074;&#10074;"; }
-                else { audio.pause(); document.getElementById('play-pause-btn').innerHTML = "&#9654;"; }
-            }
-            function stopMusic() { audio.pause(); audio.currentTime = 0; document.getElementById('play-pause-btn').innerHTML = "&#9654;"; }
-            function loadNextSong() { playTrack((currentIndex + 1) % currentPlaylist.length); }
-            function loadPrevSong() { playTrack((currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length); }
-            function togglePlaylist() { list.style.display = (list.style.display === 'none') ? 'block' : 'none'; }
-            
-            document.getElementById('volume-control').oninput = (e) => audio.volume = e.target.value;
-            audio.ontimeupdate = () => {
-                let m = Math.floor(audio.currentTime / 60), s = Math.floor(audio.currentTime % 60);
-                document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
-            };
-            audio.onended = loadNextSong;
+            audio.volume = 0.4;
             renderPlaylistUI();
+            playTrack(0);
+            pauseMusic();
         </script>
     </body>
 </html>
