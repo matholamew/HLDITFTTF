@@ -71,7 +71,138 @@
                 font-size: 18px;
             }
 
-            /* TECHJAMS STYLING */
+            /* --- WINAMP STYLING --- */
+            #winamp-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 300px;
+                background: #27273d;
+                border: 3px outset #4a4a7d;
+                padding: 8px;
+                z-index: 9999;
+                box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
+                color: #00ff00;
+                font-family: Arial, sans-serif;
+            }
+
+            .winamp-title-bar {
+                background: #000080;
+                color: white;
+                font-size: 11px;
+                padding: 2px 5px;
+                font-weight: bold;
+                margin-bottom: 5px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .winamp-display {
+                background: #000;
+                border: 2px inset #444;
+                padding: 5px;
+                height: 50px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .winamp-timer {
+                font-size: 24px;
+                font-family: 'Courier New', Courier, monospace;
+                color: #00ff00;
+                text-shadow: 0 0 5px #00ff00;
+            }
+
+            .winamp-marquee {
+                font-size: 10px;
+                color: #00ff00;
+                white-space: nowrap;
+                position: absolute;
+                bottom: 5px;
+                width: 100%;
+            }
+
+            .winamp-visualizer {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                width: 60px;
+                height: 20px;
+                display: flex;
+                align-items: flex-end;
+                gap: 1px;
+            }
+
+            .vis-bar {
+                width: 4px;
+                background: #00ff00;
+                height: 2px;
+            }
+
+            .playing .vis-bar {
+                animation: vis-bounce 0.5s infinite alternate;
+            }
+
+            @keyframes vis-bounce {
+                from { height: 2px; }
+                to { height: 15px; }
+            }
+
+            /* VOLUME SLIDER STYLING */
+            .winamp-vol-container {
+                margin: 8px 0;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 10px;
+                color: #fff;
+            }
+
+            .winamp-vol-slider {
+                flex-grow: 1;
+                -webkit-appearance: none;
+                background: #000;
+                height: 6px;
+                border: 1px solid #444;
+                outline: none;
+            }
+
+            .winamp-vol-slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 15px;
+                height: 10px;
+                background: #3c3c5c;
+                border: 1px outset #6b6b9e;
+                cursor: pointer;
+            }
+
+            .winamp-controls {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 2px;
+            }
+
+            .winamp-btn {
+                background: #3c3c5c;
+                border: 2px outset #6b6b9e;
+                color: white;
+                font-size: 9px;
+                padding: 4px 2px;
+                flex: 1;
+                cursor: pointer;
+                font-weight: bold;
+                text-transform: uppercase;
+                min-width: 45px;
+            }
+
+            .winamp-btn:active {
+                border: 2px inset #6b6b9e;
+            }
+
+            .btn-special { color: #ffff00; }
+            /* --- END WINAMP STYLING --- */
+
             .tech-jams-section {
                 background: #444;
                 border: 4px ridge #ff00ff;
@@ -118,17 +249,14 @@
                 border: 1px outset #999;
             }
 
-            /* SOCIAL ICONS */
             .social-box {
                 display: flex;
                 justify-content: center;
                 gap: 10px;
                 margin: 15px 0;
-                flex-wrap: wrap;
             }
 
             .social-icon {
-                width: auto;
                 min-width: 40px;
                 height: 32px;
                 padding: 0 10px;
@@ -141,10 +269,7 @@
                 text-decoration: none;
                 font-weight: bold;
                 font-size: 12px;
-                font-family: Arial, sans-serif;
             }
-
-            .social-icon:active { border: 2px inset #fff; }
 
             .spinning-tech {
                 display: block;
@@ -181,42 +306,38 @@
                 height: 20px;
                 background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
             }
-
-            #music-player {
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background: #333;
-                border: 3px outset #999;
-                padding: 5px;
-                z-index: 1000;
-                font-size: 10px;
-                color: #00ff00;
-                width: 180px;
-            }
-
-            .winamp-controls {
-                display: flex;
-                gap: 2px;
-                margin-top: 4px;
-            }
-
-            .winamp-controls button {
-                font-size: 9px;
-                flex: 1;
-                cursor: pointer;
-            }
         </style>
     </head>
     <body>
 
-        <div id="music-player">
-            <b>WINAMP 2.91</b><br>
-            <marquee id="now-playing" scrollamount="2" width="100%">Loading Playlist...</marquee>
+        <div id="winamp-container">
+            <div class="winamp-title-bar">
+                <span>WINAMP</span>
+                <span>_ &#9633; X</span>
+            </div>
+            <div class="winamp-display" id="display-area">
+                <div class="winamp-timer" id="timer">00:00</div>
+                <div class="winamp-visualizer">
+                    <div class="vis-bar" style="animation-delay: 0s"></div>
+                    <div class="vis-bar" style="animation-delay: 0.1s"></div>
+                    <div class="vis-bar" style="animation-delay: 0.2s"></div>
+                    <div class="vis-bar" style="animation-delay: 0.3s"></div>
+                    <div class="vis-bar" style="animation-delay: 0.4s"></div>
+                </div>
+                <marquee class="winamp-marquee" id="now-playing" scrollamount="3">Winamp 2.91 - Nullsoft</marquee>
+            </div>
+
+            <div class="winamp-vol-container">
+                <span>VOL:</span>
+                <input type="range" class="winamp-vol-slider" id="volume-control" min="0" max="1" step="0.01" value="0.4">
+            </div>
+
             <div class="winamp-controls">
-                <button onclick="playMusic()">PLAY</button>
-                <button onclick="pauseMusic()">STOP</button>
-                <button onclick="loadRandomSong()" style="color: yellow; background: #444;">NEXT</button>
+                <button class="winamp-btn" onclick="playMusic()">PLAY</button>
+                <button class="winamp-btn" onclick="pauseMusic()">PAUSE</button>
+                <button class="winamp-btn" onclick="stopMusic()">STOP</button>
+                <button class="winamp-btn btn-special" onclick="loadRandomSong()">NEXT</button>
+                <button class="winamp-btn btn-special" onclick="loadRandomSong()">SHUFFLE</button>
             </div>
             <audio id="bg-audio" loop></audio>
         </div>
@@ -234,14 +355,10 @@
             <div class="main-table">
                 <div class="inner-content">
                     <h2>.: TECHSMITH'S VIRTUAL LAIR :.</h2>
-                    
                     <img class="spinning-tech" src="/images/android-chrome-512x512.png" alt="techsHMPH" width="150" height="150"/>
-                    
                     <p align="center"><b>Welcome to the <font color="blue">#1 Techsmith314 Fan Site</font>!</b></p>
                     <div class="rainbow-hr"></div>
-
-                    <p>Is he still playing Vampire Therapist? <b>YES.</b> Has he finished? <b>NO.</b> Grab a Capri Sun and watch the eternal struggle below.</p>
-                    
+                    <p>Is he still playing Vampire Therapist? <b>YES.</b> Has he finished? <b>NO.</b> Grab a Capri Sun and watch the struggle below.</p>
                     <div align="center">
                         <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif" width="40">
                         <a href="#cta" style="font-size: 20px; color: green; font-weight: bold;">[ WATCH THE STRUGGLE ]</a>
@@ -262,9 +379,6 @@
 
                 <section class="tech-jams-section">
                     <marquee behavior="alternate" scrollamount="3"><font color="#ff00ff" size="4"><b>.: TechJams :.</b></font></marquee>
-                    <p align="center" style="color: white; font-size: 14px; margin-bottom: 15px;">
-                        Tech Jam is an annual event where folks from the community make a fun little song and then I play them all on stream.
-                    </p>
                     <div class="jam-grid">
                         <div class="jam-item">
                             <video id="jam-vid-1" autoplay muted loop>
@@ -286,15 +400,14 @@
                             <a href="https://www.youtube.com/@Techsmith314TV" class="social-icon" target="_blank">VODs Youtube</a>
                             <a href="https://www.discord.com/users/techsmith314" class="social-icon" target="_blank">Discord</a>
                         </div>
-
-                        <a href="#" onclick="alert('The Guestbook is temporarily closed due to toaster-related hardware failure!')">
+                        <a href="#" onclick="alert('The Guestbook is temporarily closed due to toaster failure!')">
                             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="100" border="0" alt="Sign Guestbook">
                         </a>
                         <br><br>
                         <b>VISITOR NUMBER:</b><br>
                         <div id="counter-box">000420</div>
                         <br><br>
-                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="80" alt="Netscape Now">
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="80" alt="Netscape">
                         <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/3o72FkiKQM4vWLTuuA/giphy.gif" width="80" alt="Construction">
                         <br><br>
                         <font size="1">Copyright 2026 - Optimized for Netscape Navigator</font>
@@ -306,43 +419,63 @@
         <div class="construction-bar"></div>
 
         <script>
-            // 1. VISITOR COUNTER
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
-            // 2. VIDEO MUTE TOGGLE
             function toggleMute(videoId, button) {
                 const vid = document.getElementById(videoId);
                 vid.muted = !vid.muted;
                 button.innerText = vid.muted ? "UNMUTE" : "MUTE";
             }
 
-            // 3. WINAMP PLAYLIST
             const playlist = [
-                { 
-                    name: "AMERICA - Nedini", 
-                    url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
-                }
+                { name: "AMERICA - Nedini", url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" }
             ];
 
             const audio = document.getElementById('bg-audio');
             const display = document.getElementById('now-playing');
+            const timer = document.getElementById('timer');
+            const container = document.getElementById('display-area');
+            const volSlider = document.getElementById('volume-control');
+
+            // Initial Volume setup
+            audio.volume = 0.4;
+
+            volSlider.addEventListener('input', (e) => {
+                audio.volume = e.target.value;
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                let mins = Math.floor(audio.currentTime / 60);
+                let secs = Math.floor(audio.currentTime % 60);
+                timer.innerText = (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+            });
 
             function loadRandomSong() {
                 const track = playlist[Math.floor(Math.random() * playlist.length)];
                 audio.src = track.url;
-                display.innerText = "Now Playing: " + track.name;
+                display.innerText = track.name;
                 audio.load();
-                if (!audio.paused) { audio.play(); }
+                if (!audio.paused) { playMusic(); }
             }
 
             function playMusic() {
-                audio.play().catch(e => { alert("Click anywhere on the page first, then press PLAY!"); });
+                audio.play();
+                container.classList.add('playing');
             }
 
-            function pauseMusic() { audio.pause(); }
+            function pauseMusic() {
+                audio.pause();
+                container.classList.remove('playing');
+            }
+
+            function stopMusic() {
+                audio.pause();
+                audio.currentTime = 0;
+                container.classList.remove('playing');
+            }
 
             loadRandomSong();
         </script>
