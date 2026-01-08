@@ -74,14 +74,14 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                pointer-events: none; /* Let clicks pass through to site unless hitting a window */
+                pointer-events: none;
                 z-index: 9999;
             }
 
             .draggable-window {
                 position: absolute;
                 user-select: none;
-                pointer-events: auto; /* Re-enable clicks for windows */
+                pointer-events: auto;
             }
 
             #winamp-container {
@@ -218,13 +218,12 @@
                 cursor: pointer;
                 font-weight: bold;
                 text-transform: uppercase;
-                min-width: 45px;
+                min-width: 42px;
             }
 
             .winamp-btn:active { border: 2px inset #6b6b9e; }
             .btn-special { color: #ffff00; }
 
-            /* --- TECH JAM STYLING --- */
             .tech-jams-section { background: #444; border: 4px ridge #ff00ff; padding: 10px; margin-top: 20px; }
             .jam-description { color: white; font-size: 14px; text-align: center; margin-bottom: 15px; line-height: 1.4; }
             .jam-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 10px; }
@@ -248,7 +247,7 @@
             <div id="playlist-window" class="draggable-window">
                 <div class="playlist-header" id="playlist-handle" style="display: flex; justify-content: space-between; align-items: center;">
                     <span>WINAMP PLAYLIST</span>
-                    <button onclick="renderRandomizedPlaylist()" style="font-size: 8px; cursor: pointer; background: #3c3c5c; color: white; border: 1px outset #6b6b9e; padding: 1px 3px;">SHUFFLE LIST</button>
+                    <button onclick="shuffleMusic()" style="font-size: 8px; cursor: pointer; background: #3c3c5c; color: white; border: 1px outset #6b6b9e; padding: 1px 3px;">SHUFFLE LIST</button>
                 </div>
                 <div id="playlist-items"></div>
             </div>
@@ -279,9 +278,10 @@
                     <button class="winamp-btn" onclick="playMusic()">PLAY</button>
                     <button class="winamp-btn" onclick="pauseMusic()">PAUSE</button>
                     <button class="winamp-btn" onclick="stopMusic()">STOP</button>
+                    <button class="winamp-btn btn-special" onclick="loadPrevSong()">PREV</button>
                     <button class="winamp-btn btn-special" onclick="loadNextSong()">NEXT</button>
                     <button class="winamp-btn btn-special" onclick="shuffleMusic()">SHUFFLE</button>
-                    <button class="winamp-btn" onclick="toggleAndReshufflePlaylist()">LIST</button>
+                    <button class="winamp-btn" onclick="togglePlaylist()">LIST</button>
                 </div>
                 <audio id="bg-audio"></audio>
             </div>
@@ -364,7 +364,7 @@
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
-            // --- ADVANCED DRAG & SNAP LOGIC ---
+            // --- DRAG & SNAP LOGIC ---
             let highestZ = 9999;
             const snapThreshold = 20;
 
@@ -375,11 +375,8 @@
                 function dragMouseDown(e) {
                     e = e || window.event;
                     e.preventDefault();
-                    
-                    // Move to front
                     highestZ++;
                     element.style.zIndex = highestZ;
-
                     pos3 = e.clientX;
                     pos4 = e.clientY;
                     document.onmouseup = closeDragElement;
@@ -393,37 +390,17 @@
                     pos2 = pos4 - e.clientY;
                     pos3 = e.clientX;
                     pos4 = e.clientY;
-
                     let newTop = element.offsetTop - pos2;
                     let newLeft = element.offsetLeft - pos1;
-
-                    // Snapping Logic
                     const other = document.getElementById(otherElementId);
                     if (other && other.style.display !== 'none') {
-                        const r1 = element.getBoundingClientRect();
-                        const r2 = other.getBoundingClientRect();
-
-                        // Vertical Snap (Top/Bottom)
-                        if (Math.abs(newTop - (other.offsetTop + other.offsetHeight)) < snapThreshold) {
-                            newTop = other.offsetTop + other.offsetHeight;
-                        } else if (Math.abs((newTop + element.offsetHeight) - other.offsetTop) < snapThreshold) {
-                            newTop = other.offsetTop - element.offsetHeight;
-                        }
-
-                        // Horizontal Snap (Left/Right)
-                        if (Math.abs(newLeft - (other.offsetLeft + other.offsetWidth)) < snapThreshold) {
-                            newLeft = other.offsetLeft + other.offsetWidth;
-                        } else if (Math.abs((newLeft + element.offsetWidth) - other.offsetLeft) < snapThreshold) {
-                            newLeft = other.offsetLeft - element.offsetWidth;
-                        }
-
-                        // Alignment Snap (Sides matching)
+                        if (Math.abs(newTop - (other.offsetTop + other.offsetHeight)) < snapThreshold) newTop = other.offsetTop + other.offsetHeight;
+                        else if (Math.abs((newTop + element.offsetHeight) - other.offsetTop) < snapThreshold) newTop = other.offsetTop - element.offsetHeight;
+                        if (Math.abs(newLeft - (other.offsetLeft + other.offsetWidth)) < snapThreshold) newLeft = other.offsetLeft + other.offsetWidth;
+                        else if (Math.abs((newLeft + element.offsetWidth) - other.offsetLeft) < snapThreshold) newLeft = other.offsetLeft - element.offsetWidth;
                         if (Math.abs(newLeft - other.offsetLeft) < snapThreshold) newLeft = other.offsetLeft;
-                        if (Math.abs((newLeft + element.offsetWidth) - (other.offsetLeft + other.offsetWidth)) < snapThreshold) {
-                            newLeft = other.offsetLeft + other.offsetWidth - element.offsetWidth;
-                        }
+                        if (Math.abs((newLeft + element.offsetWidth) - (other.offsetLeft + other.offsetWidth)) < snapThreshold) newLeft = other.offsetLeft + other.offsetWidth - element.offsetWidth;
                     }
-
                     element.style.top = newTop + "px";
                     element.style.left = newLeft + "px";
                 }
@@ -466,10 +443,13 @@
                 { name: "Oddly Sexual - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Oddly%20Sexual%20-%20BagOfBurritos.mp3" },
                 { name: "Uh Fuck - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Uh%20Fuck%20-%20BagOfBurritos.mp3" },
                 { name: "The Struggle (Stop Look Think) - shay_the_skunk", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Struggle%20(Stop%20Look%20Think)%20-%20Shay%20the%20Skunk.mp3" },
-                { name: "Song of Gawks - eurobeatviking", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Song%20of%20Gawks%20-%20Eurobeatviking.mp3" }                
+                { name: "Song of Gawks - eurobeatviking", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Song%20of%20Gawks%20-%20Eurobeatviking.mp3" },
+                { name: "Madness - bucho54", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Madness%20-%20bucho54.mp3" }
             ];
 
-            let currentTrackIndex = 0;
+            let currentListPosition = 0; 
+            let shuffledIndices = playlist.map((_, i) => i); 
+
             const audio = document.getElementById('bg-audio');
             const display = document.getElementById('now-playing');
             const timer = document.getElementById('timer');
@@ -478,60 +458,66 @@
             const playlistWindow = document.getElementById('playlist-window');
             const playlistItemsContainer = document.getElementById('playlist-items');
 
-            function renderRandomizedPlaylist() {
+            function renderPlaylistUI() {
                 playlistItemsContainer.innerHTML = '';
-                // Create a list of indices and shuffle them
-                let indices = playlist.map((_, i) => i);
-                indices.sort(() => Math.random() - 0.5);
-                
-                // i represents the position in the list (1, 2, 3...)
-                // originalIndex is which song from the playlist array is at that position
-                indices.forEach((originalIndex, i) => {
+                shuffledIndices.forEach((originalIndex, i) => {
                     const track = playlist[originalIndex];
                     const div = document.createElement('div');
                     div.className = 'playlist-item';
-                    div.id = 'track-' + originalIndex;
-                    
-                    // Display the sequential number (i + 1) regardless of which song it is
+                    div.id = 'pos-' + i;
                     div.innerText = (i + 1) + ". " + track.name;
-                    
-                    div.onclick = () => playSpecificTrack(originalIndex);
-                    if (originalIndex === currentTrackIndex) div.classList.add('active');
+                    div.onclick = () => playFromListPosition(i);
+                    if (i === currentListPosition) div.classList.add('active');
                     playlistItemsContainer.appendChild(div);
                 });
             }
 
-            function toggleAndReshufflePlaylist() {
+            function playFromListPosition(pos) {
+                currentListPosition = pos;
+                const trackIndex = shuffledIndices[pos];
+                const track = playlist[trackIndex];
+                
+                audio.src = track.url;
+                display.innerText = (pos + 1) + ". " + track.name;
+                
+                document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
+                const activeEl = document.getElementById('pos-' + pos);
+                if (activeEl) {
+                    activeEl.classList.add('active');
+                    // Optional: Scroll to the active item
+                    activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                
+                playMusic();
+            }
+
+            function loadNextSong() {
+                let nextPos = currentListPosition + 1;
+                if (nextPos >= playlist.length) nextPos = 0; 
+                playFromListPosition(nextPos);
+            }
+
+            function loadPrevSong() {
+                let prevPos = currentListPosition - 1;
+                if (prevPos < 0) prevPos = playlist.length - 1; 
+                playFromListPosition(prevPos);
+            }
+
+            function shuffleMusic() {
+                shuffledIndices.sort(() => Math.random() - 0.5);
+                renderPlaylistUI();
+                playFromListPosition(0); 
+            }
+
+            function togglePlaylist() {
                 const isHidden = (playlistWindow.style.display === 'none' || playlistWindow.style.display === '');
                 if (isHidden) { 
-                    renderRandomizedPlaylist(); 
                     playlistWindow.style.display = 'block';
-                    // Move to front when opened
                     highestZ++;
                     playlistWindow.style.zIndex = highestZ;
                 }
                 else { playlistWindow.style.display = 'none'; }
             }
-
-            function playSpecificTrack(index) {
-                currentTrackIndex = index;
-                const track = playlist[index];
-                audio.src = track.url;
-                display.innerText = track.name;
-                document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
-                const activeEl = document.getElementById('track-' + index);
-                if (activeEl) activeEl.classList.add('active');
-                playMusic();
-            }
-
-            function shuffleMusic() {
-                let randomIndex;
-                do { randomIndex = Math.floor(Math.random() * playlist.length); } 
-                while (randomIndex === currentTrackIndex && playlist.length > 1);
-                playSpecificTrack(randomIndex);
-            }
-
-            function loadNextSong() { shuffleMusic(); }
 
             audio.volume = 0.4;
             volSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
@@ -540,16 +526,16 @@
                 let secs = Math.floor(audio.currentTime % 60);
                 timer.innerText = (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
             });
-            audio.addEventListener('ended', shuffleMusic);
+            audio.addEventListener('ended', loadNextSong);
 
             function playMusic() { audio.play().catch(e => console.log("User interaction needed")); container.classList.add('playing'); }
             function pauseMusic() { audio.pause(); container.classList.remove('playing'); }
             function stopMusic() { audio.pause(); audio.currentTime = 0; container.classList.remove('playing'); }
 
-            playSpecificTrack(0);
+            // Init
+            renderPlaylistUI();
+            playFromListPosition(0);
             pauseMusic(); 
         </script>
     </body>
 </html>
-
-
