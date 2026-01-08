@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>*** HLDITFTTF? - TECHSMITH'S LAIR ***</title>
+        <title>HLDITFTTF? - TECHSMITH'S LAIR</title>
         <link rel="icon" href="/images/favicon.ico" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -10,17 +10,15 @@
             /* THE GEOCITIES CORE */
             body {
                 background-color: #000000;
-                background-image: url('https://web.archive.org/web/20091024031526im_/http://geocities.com/Area51/Station/7057/stars_bg.gif');
+                background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
                 color: #ffffff;
                 font-family: "Comic Sans MS", cursive;
                 margin: 0;
                 padding: 0;
             }
 
-            /* Custom Cursor - The classic trailing star feel */
             html { cursor: url('https://cur.cursors-4u.net/anime/ani-1/ani11.cur'), auto; }
 
-            /* Winamp-style Player */
             #music-player {
                 position: fixed;
                 bottom: 10px;
@@ -35,7 +33,7 @@
             }
 
             header {
-                background: url('https://web.archive.org/web/20091027083011im_/http://www.geocities.com/Hollywood/Hills/8944/flame.gif');
+                background: url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueW9ueXNidXJueW9ueXNidXJueW9ueXNidXJueW9ueXNidXJuJmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/3o72FkiKQM4vWLTuuA/giphy.gif');
                 padding: 20px;
                 text-align: center;
                 border-bottom: 5px solid yellow;
@@ -48,7 +46,6 @@
                 text-shadow: 4px 4px #ff0000;
             }
 
-            /* Main Table Layout (The proper 90s way) */
             .main-table {
                 width: 90%;
                 max-width: 900px;
@@ -85,7 +82,6 @@
                 100% { transform: rotate(0deg) scale(1); }
             }
 
-            /* The Twitch Embed Container */
             #cta {
                 background: #000;
                 padding: 10px;
@@ -93,7 +89,6 @@
                 margin-top: 20px;
             }
 
-            /* Footer Socials */
             .icons {
                 list-style: none;
                 padding: 0;
@@ -111,7 +106,6 @@
                 text-decoration: none;
             }
 
-            /* Flashing Elements */
             .flash { animation: blinker 0.5s step-start infinite; }
             @keyframes blinker { 50% { opacity: 0; } }
 
@@ -119,6 +113,17 @@
                 width: 100%;
                 height: 20px;
                 background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
+            }
+
+            /* Visitor Counter Styling */
+            #counter-box {
+                background: #000;
+                color: #ff0000;
+                font-family: 'Courier New', Courier, monospace;
+                padding: 5px 10px;
+                border: 2px inset #555;
+                font-weight: bold;
+                letter-spacing: 2px;
             }
         </style>
     </head>
@@ -135,7 +140,7 @@
         </div>
 
         <div class="construction-bar"></div>
-        <marquee bg-color="red" style="color:white; font-weight:bold;">*** WELCOME TO THE TOASTER ZONE *** YOU ARE VISITOR #000420 *** DON'T FORGET TO SIGN THE GUESTBOOK ***</marquee>
+        <marquee bg-color="red" style="color:white; font-weight:bold;">*** YOU ARE VISITOR #<span id="visitor-count">000000</span> *** DON'T FORGET TO SIGN THE GUESTBOOK ***</marquee>
 
         <div id="page-wrapper">
             <header id="header">
@@ -158,9 +163,9 @@
                            Is he okay? Is the toaster okay? We may never know.</p>
                         
                         <div align="center">
-                            <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif">
+                            <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif" onerror="this.src='https://fav.farm/🔥'">
                             <a href="#cta" style="font-size: 20px; color: green;"><b>[ ENTER THE STREAM ]</b></a>
-                            <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif">
+                            <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif" onerror="this.src='https://fav.farm/🔥'">
                         </div>
                     </div>
 
@@ -173,7 +178,7 @@
                             height: "400",
                             channel: "techsmith314",
                             muted: "false",
-                            parent: ["www.howlongdoesittakefortechtofinish.com"]
+                            parent: ["howlongdoesittakefortechtofinish.com", "www.howlongdoesittakefortechtofinish.com"]
                         });
                         </script>
                     </section>
@@ -188,9 +193,13 @@
                         </ul>
                         <center>
                             <br>
-                            <img src="https://web.archive.org/web/20090831190100im_/http://geocities.com/Heartland/6561/undercon.gif">
+                            <img src="https://blog.sqlauthority.com/i/under-construction.gif" alt="Under Construction" width="100">
                             <br>
-                            <font size="1">Copyright 2024 Techsmith314 - Optimized for Netscape Navigator 4.0</font>
+                            <div style="margin-top:10px;">
+                                Visitor Count: <span id="counter-box">000420</span>
+                            </div>
+                            <br>
+                            <font size="1">Copyright 2026 Techsmith314 - Optimized for Netscape Navigator 4.0</font>
                         </center>
                     </footer>
                 </div>
@@ -198,6 +207,25 @@
         </div>
 
         <div class="construction-bar"></div>
+
+        <script>
+            // JANKY VISITOR COUNTER
+            // Uses LocalStorage so it remembers YOU, but adds a random "base" number for vibes
+            function updateCounter() {
+                let count = localStorage.getItem('visitorCount');
+                if (!count) {
+                    count = 420; // Starting number for the jank
+                }
+                count = parseInt(count) + 1;
+                localStorage.setItem('visitorCount', count);
+                
+                // Format with leading zeros
+                let formatted = count.toString().padStart(6, '0');
+                document.getElementById('visitor-count').innerText = formatted;
+                document.getElementById('counter-box').innerText = formatted;
+            }
+            updateCounter();
+        </script>
 
     </body>
 </html>
