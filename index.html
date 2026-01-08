@@ -14,6 +14,7 @@
                 font-family: "Comic Sans MS", cursive;
                 margin: 0;
                 padding: 0;
+                overflow-x: hidden;
             }
 
             html { cursor: url('https://cur.cursors-4u.net/anime/ani-1/ani11.cur'), auto; }
@@ -31,12 +32,7 @@
                 font-size: 85px; 
                 font-weight: bold;
                 color: white;
-                text-shadow: 
-                    -4px -4px 0 #000,  
-                     4px -4px 0 #000,
-                    -4px  4px 0 #000,
-                     4px  4px 0 #000,
-                     0 0 30px #ff0000; 
+                text-shadow: -4px -4px 0 #000, 4px -4px 0 #000, -4px  4px 0 #000, 4px  4px 0 #000, 0 0 30px #ff0000; 
                 animation: flicker 0.1s infinite;
                 letter-spacing: 5px;
             }
@@ -74,12 +70,18 @@
             /* --- WINAMP STYLING --- */
             #winamp-wrapper {
                 position: fixed;
-                bottom: 20px;
-                right: 20px;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none; /* Let clicks pass through to site unless hitting a window */
                 z-index: 9999;
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
+            }
+
+            .draggable-window {
+                position: absolute;
+                user-select: none;
+                pointer-events: auto; /* Re-enable clicks for windows */
             }
 
             #winamp-container {
@@ -90,27 +92,38 @@
                 box-shadow: 5px 5px 15px rgba(0,0,0,0.8);
                 color: #00ff00;
                 font-family: Arial, sans-serif;
+                top: 50%;
+                left: 80%;
             }
 
-            /* Playlist styling */
             #playlist-window {
                 width: 300px;
                 background: #000;
                 border: 3px outset #4a4a7d;
-                display: none; /* Hidden by default */
-                max-height: 150px;
-                overflow-y: auto;
+                display: none;
+                max-height: 200px;
                 padding: 5px;
+                top: 30%;
+                left: 80%;
             }
 
-            .playlist-header {
+            #playlist-items {
+                max-height: 150px;
+                overflow-y: auto;
+            }
+
+            .playlist-header, .winamp-title-bar {
                 background: #000080;
                 color: white;
                 font-size: 10px;
                 padding: 2px 5px;
-                text-align: center;
                 font-weight: bold;
                 border-bottom: 1px solid #4a4a7d;
+                cursor: grab;
+            }
+            
+            .playlist-header:active, .winamp-title-bar:active {
+                cursor: grabbing;
             }
 
             .playlist-item {
@@ -124,26 +137,8 @@
                 text-overflow: ellipsis;
             }
 
-            .playlist-item:hover {
-                background: #3c3c5c;
-                color: #fff;
-            }
-
-            .playlist-item.active {
-                background: #000080;
-                color: #fff;
-            }
-
-            .winamp-title-bar {
-                background: #000080;
-                color: white;
-                font-size: 11px;
-                padding: 2px 5px;
-                font-weight: bold;
-                margin-bottom: 5px;
-                display: flex;
-                justify-content: space-between;
-            }
+            .playlist-item:hover { background: #3c3c5c; color: #fff; }
+            .playlist-item.active { background: #000080; color: #fff; }
 
             .winamp-display {
                 background: #000;
@@ -181,20 +176,10 @@
                 gap: 1px;
             }
 
-            .vis-bar {
-                width: 4px;
-                background: #00ff00;
-                height: 2px;
-            }
+            .vis-bar { width: 4px; background: #00ff00; height: 2px; }
+            .playing .vis-bar { animation: vis-bounce 0.5s infinite alternate; }
 
-            .playing .vis-bar {
-                animation: vis-bounce 0.5s infinite alternate;
-            }
-
-            @keyframes vis-bounce {
-                from { height: 2px; }
-                to { height: 15px; }
-            }
+            @keyframes vis-bounce { from { height: 2px; } to { height: 15px; } }
 
             .winamp-vol-container {
                 margin: 8px 0;
@@ -216,19 +201,12 @@
 
             .winamp-vol-slider::-webkit-slider-thumb {
                 -webkit-appearance: none;
-                width: 15px;
-                height: 10px;
-                background: #3c3c5c;
-                border: 1px outset #6b6b9e;
+                width: 15px; height: 10px;
+                background: #3c3c5c; border: 1px outset #6b6b9e;
                 cursor: pointer;
             }
 
-            .winamp-controls {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                gap: 2px;
-            }
+            .winamp-controls { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px; }
 
             .winamp-btn {
                 background: #3c3c5c;
@@ -243,148 +221,40 @@
                 min-width: 45px;
             }
 
-            .winamp-btn:active {
-                border: 2px inset #6b6b9e;
-            }
-
+            .winamp-btn:active { border: 2px inset #6b6b9e; }
             .btn-special { color: #ffff00; }
-            /* --- END WINAMP STYLING --- */
 
-            /* TECH JAMS VIDEO STYLING */
-            .tech-jams-section {
-                background: #444;
-                border: 4px ridge #ff00ff;
-                padding: 10px;
-                margin-top: 20px;
-            }
-
-            .jam-description {
-                color: white;
-                font-size: 14px;
-                text-align: center;
-                margin-bottom: 15px;
-                line-height: 1.4;
-            }
-
-            .jam-grid {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                padding: 10px;
-            }
-
-            .jam-item {
-                background: #000;
-                border: 3px inset #888;
-                padding: 5px;
-                width: 320px; 
-            }
-
-            .jam-item video {
-                width: 100%;
-                display: block;
-                background: black; 
-            }
-
-            .jam-caption {
-                color: #00ff00;
-                font-size: 12px;
-                text-align: center;
-                padding: 5px 0;
-                font-family: 'Courier New', monospace;
-            }
-
-            .jam-controls-row {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-top: 5px;
-                padding: 0 5px;
-            }
-
-            .jam-vol-label {
-                color: #fff;
-                font-size: 10px;
-                white-space: nowrap;
-            }
-
-            .jam-slider {
-                flex-grow: 1;
-                cursor: pointer;
-            }
-
-            .jam-mute-btn {
-                background: #333;
-                color: #fff;
-                border: 1px outset #999;
-                font-size: 9px;
-                padding: 2px 4px;
-                cursor: pointer;
-                min-width: 55px;
-            }
-
-            .jam-mute-btn:active {
-                border: 1px inset #999;
-            }
-
-            .social-box {
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-                margin: 15px 0;
-            }
-
-            .social-icon {
-                min-width: 40px;
-                height: 32px;
-                padding: 0 10px;
-                background: yellow;
-                border: 2px outset #fff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: black;
-                text-decoration: none;
-                font-weight: bold;
-                font-size: 12px;
-            }
-
-            .rainbow-hr {
-                height: 12px;
-                background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-                border: 2px solid #000;
-                margin: 20px 0;
-            }
-
-            #counter-box {
-                background: #000;
-                color: #ff0000;
-                font-family: 'Courier New', Courier, monospace;
-                padding: 5px 10px;
-                border: 3px inset #555;
-                font-size: 24px;
-                display: inline-block;
-            }
-
-            .construction-bar {
-                width: 100%;
-                height: 20px;
-                background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
-            }
+            /* --- TECH JAM STYLING --- */
+            .tech-jams-section { background: #444; border: 4px ridge #ff00ff; padding: 10px; margin-top: 20px; }
+            .jam-description { color: white; font-size: 14px; text-align: center; margin-bottom: 15px; line-height: 1.4; }
+            .jam-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 10px; }
+            .jam-item { background: #000; border: 3px inset #888; padding: 5px; width: 320px; }
+            .jam-item video { width: 100%; display: block; background: black; }
+            .jam-caption { color: #00ff00; font-size: 12px; text-align: center; padding: 5px 0; font-family: 'Courier New', monospace; }
+            .jam-controls-row { display: flex; align-items: center; gap: 8px; margin-top: 5px; padding: 0 5px; }
+            .jam-vol-label { color: #fff; font-size: 10px; white-space: nowrap; }
+            .jam-slider { flex-grow: 1; cursor: pointer; }
+            .jam-mute-btn { background: #333; color: #fff; border: 1px outset #999; font-size: 9px; padding: 2px 4px; cursor: pointer; min-width: 55px; }
+            .social-box { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
+            .social-icon { min-width: 40px; height: 32px; padding: 0 10px; background: yellow; border: 2px outset #fff; display: flex; align-items: center; justify-content: center; color: black; text-decoration: none; font-weight: bold; font-size: 12px; }
+            .rainbow-hr { height: 12px; background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet); border: 2px solid #000; margin: 20px 0; }
+            #counter-box { background: #000; color: #ff0000; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; border: 3px inset #555; font-size: 24px; display: inline-block; }
+            .construction-bar { width: 100%; height: 20px; background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px); }
         </style>
     </head>
     <body>
 
         <div id="winamp-wrapper">
-            <div id="playlist-window">
-                <div class="playlist-header">WINAMP PLAYLIST</div>
-                <div id="playlist-items">
-                    </div>
+            <div id="playlist-window" class="draggable-window">
+                <div class="playlist-header" id="playlist-handle" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>WINAMP PLAYLIST</span>
+                    <button onclick="renderRandomizedPlaylist()" style="font-size: 8px; cursor: pointer; background: #3c3c5c; color: white; border: 1px outset #6b6b9e; padding: 1px 3px;">SHUFFLE LIST</button>
+                </div>
+                <div id="playlist-items"></div>
             </div>
 
-            <div id="winamp-container">
-                <div class="winamp-title-bar">
+            <div id="winamp-container" class="draggable-window">
+                <div class="winamp-title-bar" id="player-handle">
                     <span>WINAMP</span>
                     <span>_ &#9633; X</span>
                 </div>
@@ -410,7 +280,8 @@
                     <button class="winamp-btn" onclick="pauseMusic()">PAUSE</button>
                     <button class="winamp-btn" onclick="stopMusic()">STOP</button>
                     <button class="winamp-btn btn-special" onclick="loadNextSong()">NEXT</button>
-                    <button class="winamp-btn btn-special" onclick="togglePlaylist()">LIST</button>
+                    <button class="winamp-btn btn-special" onclick="shuffleMusic()">SHUFFLE</button>
+                    <button class="winamp-btn" onclick="toggleAndReshufflePlaylist()">LIST</button>
                 </div>
                 <audio id="bg-audio"></audio>
             </div>
@@ -448,11 +319,7 @@
 
                 <section class="tech-jams-section">
                     <marquee behavior="alternate" scrollamount="3"><font color="#ff00ff" size="4"><b>.: TechJams :.</b></font></marquee>
-                    
-                    <div class="jam-description">
-                        <b>Tech Jam</b> is an annual event where folks from the community make a fun little song and then I play them all on stream.
-                    </div>
-
+                    <div class="jam-description"><b>Tech Jam</b> is an annual event where folks from the community make a fun little song and then I play them all on stream.</div>
                     <div class="jam-grid">
                         <div class="jam-item">
                             <video id="jam-vid-1" autoplay loop muted playsinline preload="auto">
@@ -491,11 +358,84 @@
         <div class="construction-bar"></div>
 
         <script>
-            // Visitor Counter logic
+            // Visitor Counter
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
+
+            // --- ADVANCED DRAG & SNAP LOGIC ---
+            let highestZ = 9999;
+            const snapThreshold = 20;
+
+            function makeDraggable(element, handle, otherElementId) {
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                handle.onmousedown = dragMouseDown;
+
+                function dragMouseDown(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    
+                    // Move to front
+                    highestZ++;
+                    element.style.zIndex = highestZ;
+
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    document.onmouseup = closeDragElement;
+                    document.onmousemove = elementDrag;
+                }
+
+                function elementDrag(e) {
+                    e = e || window.event;
+                    e.preventDefault();
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+
+                    let newTop = element.offsetTop - pos2;
+                    let newLeft = element.offsetLeft - pos1;
+
+                    // Snapping Logic
+                    const other = document.getElementById(otherElementId);
+                    if (other && other.style.display !== 'none') {
+                        const r1 = element.getBoundingClientRect();
+                        const r2 = other.getBoundingClientRect();
+
+                        // Vertical Snap (Top/Bottom)
+                        if (Math.abs(newTop - (other.offsetTop + other.offsetHeight)) < snapThreshold) {
+                            newTop = other.offsetTop + other.offsetHeight;
+                        } else if (Math.abs((newTop + element.offsetHeight) - other.offsetTop) < snapThreshold) {
+                            newTop = other.offsetTop - element.offsetHeight;
+                        }
+
+                        // Horizontal Snap (Left/Right)
+                        if (Math.abs(newLeft - (other.offsetLeft + other.offsetWidth)) < snapThreshold) {
+                            newLeft = other.offsetLeft + other.offsetWidth;
+                        } else if (Math.abs((newLeft + element.offsetWidth) - other.offsetLeft) < snapThreshold) {
+                            newLeft = other.offsetLeft - element.offsetWidth;
+                        }
+
+                        // Alignment Snap (Sides matching)
+                        if (Math.abs(newLeft - other.offsetLeft) < snapThreshold) newLeft = other.offsetLeft;
+                        if (Math.abs((newLeft + element.offsetWidth) - (other.offsetLeft + other.offsetWidth)) < snapThreshold) {
+                            newLeft = other.offsetLeft + other.offsetWidth - element.offsetWidth;
+                        }
+                    }
+
+                    element.style.top = newTop + "px";
+                    element.style.left = newLeft + "px";
+                }
+
+                function closeDragElement() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
+            }
+
+            makeDraggable(document.getElementById("winamp-container"), document.getElementById("player-handle"), "playlist-window");
+            makeDraggable(document.getElementById("playlist-window"), document.getElementById("playlist-handle"), "winamp-container");
 
             // --- TECH JAM VIDEO LOGIC ---
             const jamVid = document.getElementById('jam-vid-1');
@@ -505,27 +445,14 @@
 
             function toggleJamMute() {
                 jamVid.muted = !jamVid.muted;
-                if (jamVid.muted) {
-                    jamMuteBtn.innerText = "UNMUTE";
-                    jamSlider.value = 0;
-                } else {
-                    jamMuteBtn.innerText = "MUTE";
-                    jamVid.volume = (jamVid.volume === 0) ? lastVol : jamVid.volume;
-                    jamSlider.value = jamVid.volume;
-                }
+                if (jamVid.muted) { jamMuteBtn.innerText = "UNMUTE"; jamSlider.value = 0; }
+                else { jamMuteBtn.innerText = "MUTE"; jamVid.volume = (jamVid.volume === 0) ? lastVol : jamVid.volume; jamSlider.value = jamVid.volume; }
             }
 
             jamSlider.addEventListener('input', (e) => {
-                const val = e.target.value;
-                jamVid.volume = val;
-                if (val > 0) {
-                    jamVid.muted = false;
-                    jamMuteBtn.innerText = "MUTE";
-                    lastVol = val;
-                } else {
-                    jamVid.muted = true;
-                    jamMuteBtn.innerText = "UNMUTE";
-                }
+                const val = e.target.value; jamVid.volume = val;
+                if (val > 0) { jamVid.muted = false; jamMuteBtn.innerText = "MUTE"; lastVol = val; }
+                else { jamVid.muted = true; jamMuteBtn.innerText = "UNMUTE"; }
             });
 
             // --- WINAMP LOGIC ---
@@ -536,6 +463,8 @@
                 { name: "Big Nut - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Big%20Nut%20-%20FabulousCuddle.mp3" },
                 { name: "Moon Beam Ice Cream 2 - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Moon%20Beam%20Ice%20Cream2%20-%20FabulousCuddle.mp3" },
                 { name: "The Baby Stairs - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Baby%20Stairs%20-%20FabulousCuddle.mp3" },
+                { name: "Oddly Sexual - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Oddly%20Sexual%20-%20BagOfBurritos.mp3" },
+                { name: "Uh Fuck - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Uh%20Fuck%20-%20BagOfBurritos.mp3" }
             ];
 
             let currentTrackIndex = 0;
@@ -547,21 +476,32 @@
             const playlistWindow = document.getElementById('playlist-window');
             const playlistItemsContainer = document.getElementById('playlist-items');
 
-            // Initialize Playlist UI
-            function initPlaylist() {
+            function renderRandomizedPlaylist() {
                 playlistItemsContainer.innerHTML = '';
-                playlist.forEach((track, index) => {
+                let indices = playlist.map((_, i) => i);
+                indices.sort(() => Math.random() - 0.5);
+                indices.forEach((originalIndex) => {
+                    const track = playlist[originalIndex];
                     const div = document.createElement('div');
                     div.className = 'playlist-item';
-                    div.id = 'track-' + index;
-                    div.innerText = (index + 1) + ". " + track.name;
-                    div.onclick = () => playSpecificTrack(index);
+                    div.id = 'track-' + originalIndex;
+                    div.innerText = (originalIndex + 1) + ". " + track.name;
+                    div.onclick = () => playSpecificTrack(originalIndex);
+                    if (originalIndex === currentTrackIndex) div.classList.add('active');
                     playlistItemsContainer.appendChild(div);
                 });
             }
 
-            function togglePlaylist() {
-                playlistWindow.style.display = (playlistWindow.style.display === 'block') ? 'none' : 'block';
+            function toggleAndReshufflePlaylist() {
+                const isHidden = (playlistWindow.style.display === 'none' || playlistWindow.style.display === '');
+                if (isHidden) { 
+                    renderRandomizedPlaylist(); 
+                    playlistWindow.style.display = 'block';
+                    // Move to front when opened
+                    highestZ++;
+                    playlistWindow.style.zIndex = highestZ;
+                }
+                else { playlistWindow.style.display = 'none'; }
             }
 
             function playSpecificTrack(index) {
@@ -569,53 +509,36 @@
                 const track = playlist[index];
                 audio.src = track.url;
                 display.innerText = track.name;
-                
-                // Update highlighting
                 document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
-                document.getElementById('track-' + index).classList.add('active');
-                
+                const activeEl = document.getElementById('track-' + index);
+                if (activeEl) activeEl.classList.add('active');
                 playMusic();
             }
 
-            function loadNextSong() {
-                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-                playSpecificTrack(currentTrackIndex);
+            function shuffleMusic() {
+                let randomIndex;
+                do { randomIndex = Math.floor(Math.random() * playlist.length); } 
+                while (randomIndex === currentTrackIndex && playlist.length > 1);
+                playSpecificTrack(randomIndex);
             }
 
-            audio.volume = 0.4;
-            volSlider.addEventListener('input', (e) => {
-                audio.volume = e.target.value;
-            });
+            function loadNextSong() { shuffleMusic(); }
 
+            audio.volume = 0.4;
+            volSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
             audio.addEventListener('timeupdate', () => {
                 let mins = Math.floor(audio.currentTime / 60);
                 let secs = Math.floor(audio.currentTime % 60);
                 timer.innerText = (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
             });
+            audio.addEventListener('ended', shuffleMusic);
 
-            // Auto-play next song when one ends
-            audio.addEventListener('ended', loadNextSong);
+            function playMusic() { audio.play().catch(e => console.log("User interaction needed")); container.classList.add('playing'); }
+            function pauseMusic() { audio.pause(); container.classList.remove('playing'); }
+            function stopMusic() { audio.pause(); audio.currentTime = 0; container.classList.remove('playing'); }
 
-            function playMusic() {
-                audio.play().catch(e => console.log("User interaction needed for audio"));
-                container.classList.add('playing');
-            }
-
-            function pauseMusic() {
-                audio.pause();
-                container.classList.remove('playing');
-            }
-
-            function stopMusic() {
-                audio.pause();
-                audio.currentTime = 0;
-                container.classList.remove('playing');
-            }
-
-            // Start up
-            initPlaylist();
             playSpecificTrack(0);
-            pauseMusic(); // Don't autoplay on load to respect browser policies
+            pauseMusic(); 
         </script>
     </body>
 </html>
