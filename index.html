@@ -119,7 +119,19 @@
                 z-index: 1000;
                 font-size: 10px;
                 color: #00ff00;
-                width: 150px;
+                width: 180px; /* Slightly wider for the 3rd button */
+            }
+
+            .winamp-controls {
+                display: flex;
+                gap: 2px;
+                margin-top: 4px;
+            }
+
+            .winamp-controls button {
+                font-size: 9px;
+                flex: 1;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -127,12 +139,13 @@
 
         <div id="music-player">
             <b>WINAMP 2.91</b><br>
-            <marquee scrollamount="2" width="100%">Now Playing: tech_theme_midi_v4.mid</marquee>
-            <button onclick="document.getElementById('bg-audio').play()" style="font-size: 9px;">PLAY</button>
-            <button onclick="document.getElementById('bg-audio').pause()" style="font-size: 9px;">STOP</button>
-            <audio id="bg-audio" loop>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-            </audio>
+            <marquee id="now-playing" scrollamount="2" width="100%">Loading Playlist...</marquee>
+            <div class="winamp-controls">
+                <button onclick="playMusic()">PLAY</button>
+                <button onclick="pauseMusic()">STOP</button>
+                <button onclick="loadRandomSong()" style="color: yellow; background: #444;">NEXT</button>
+            </div>
+            <audio id="bg-audio" loop></audio>
         </div>
 
         <div class="construction-bar"></div>
@@ -197,10 +210,51 @@
         <div class="construction-bar"></div>
 
         <script>
+            // 1. VISITOR COUNTER
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
+
+            // 2. RANDOMIZED PLAYLIST LOGIC
+            const playlist = [
+                { 
+                    name: "AMERICA - Nedini", 
+                    url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
+                }
+                //, { 
+                //    name: "AMERICA - Nedini", 
+                //    url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
+                //}
+            ];
+
+            const audio = document.getElementById('bg-audio');
+            const display = document.getElementById('now-playing');
+
+            function loadRandomSong() {
+                const track = playlist[Math.floor(Math.random() * playlist.length)];
+                audio.src = track.url;
+                display.innerText = "Now Playing: " + track.name;
+                audio.load();
+                
+                // If a user clicks NEXT while music is already playing, this keeps the flow going
+                if (!audio.paused) {
+                    audio.play();
+                }
+            }
+
+            function playMusic() {
+                audio.play().catch(e => {
+                    alert("Click anywhere on the page first, then press PLAY!");
+                });
+            }
+
+            function pauseMusic() {
+                audio.pause();
+            }
+
+            // Init the first random track
+            loadRandomSong();
         </script>
     </body>
 </html>
