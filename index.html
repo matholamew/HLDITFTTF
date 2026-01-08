@@ -22,7 +22,6 @@
                 background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif');
                 background-size: cover;
                 background-position: bottom;
-                /* MASSIVE PADDING FOR TALLER GIF */
                 padding: 120px 20px; 
                 text-align: center;
                 border-bottom: 5px solid yellow;
@@ -32,7 +31,6 @@
                 font-size: 85px; 
                 font-weight: bold;
                 color: white;
-                /* HEAVY BLACK STROKE FOR READABILITY */
                 text-shadow: 
                     -4px -4px 0 #000,  
                      4px -4px 0 #000,
@@ -71,6 +69,42 @@
                 padding: 5px;
                 text-align: center;
                 font-size: 18px;
+            }
+
+            /* TECHJAMS STYLING */
+            .tech-jams-section {
+                background: #444;
+                border: 4px ridge #ff00ff;
+                padding: 10px;
+                margin-top: 20px;
+            }
+
+            .jam-grid {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .jam-item {
+                background: #000;
+                border: 3px inset #888;
+                padding: 5px;
+                width: 300px; /* Keeps it smaller than the Twitch player */
+            }
+
+            .jam-item video {
+                width: 100%;
+                display: block;
+            }
+
+            .jam-caption {
+                color: #00ff00;
+                font-size: 12px;
+                text-align: center;
+                padding-top: 5px;
+                font-family: 'Courier New', monospace;
             }
 
             .spinning-tech {
@@ -133,14 +167,6 @@
                 flex: 1;
                 cursor: pointer;
             }
-
-            .video-container {
-                background: #000;
-                padding: 10px;
-                border: 4px inset #888;
-                margin-top: 20px;
-                text-align: center;
-            }
         </style>
     </head>
     <body>
@@ -193,14 +219,18 @@
                         parent: ["howlongdoesittakefortechtofinish.com", "www.howlongdoesittakefortechtofinish.com"]
                     });
                     </script>
+                </section>
 
-                    <div class="video-container">
-                        <font color="#00ff00" size="2"><b>[ EXCLUSIVE FOOTAGE ]</b></font><br>
-                        <video width="100%" height="auto" controls autoplay muted loop>
-                            <source src="https://media.howlongdoesittakefortechtofinish.com/videos/ONI_Tech_Jam.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
+                <section class="tech-jams-section">
+                    <marquee behavior="alternate" scrollamount="3"><font color="#ff00ff" size="4"><b>.: TechJams :.</b></font></marquee>
+                    <div class="jam-grid">
+                        <div class="jam-item">
+                            <video controls autoplay muted loop>
+                                <source src="https://media.howlongdoesittakefortechtofinish.com/videos/ONI_Tech_Jam.mp4" type="video/mp4">
+                            </video>
+                            <div class="jam-caption">ONI_Tech_Jam.mp4</div>
+                        </div>
+                        </div>
                 </section>
 
                 <div class="rainbow-hr"></div>
@@ -226,22 +256,16 @@
         <div class="construction-bar"></div>
 
         <script>
-            // 1. VISITOR COUNTER
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
-            // 2. RANDOMIZED PLAYLIST LOGIC
             const playlist = [
                 { 
                     name: "AMERICA - Nedini", 
                     url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
                 }
-                //, { 
-                //    name: "AMERICA - Nedini", 
-                //    url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
-                //}
             ];
 
             const audio = document.getElementById('bg-audio');
@@ -252,21 +276,14 @@
                 audio.src = track.url;
                 display.innerText = "Now Playing: " + track.name;
                 audio.load();
-                
-                if (!audio.paused) {
-                    audio.play();
-                }
+                if (!audio.paused) { audio.play(); }
             }
 
             function playMusic() {
-                audio.play().catch(e => {
-                    alert("Click anywhere on the page first, then press PLAY!");
-                });
+                audio.play().catch(e => { alert("Click anywhere on the page first, then press PLAY!"); });
             }
 
-            function pauseMusic() {
-                audio.pause();
-            }
+            function pauseMusic() { audio.pause(); }
 
             loadRandomSong();
         </script>
