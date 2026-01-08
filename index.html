@@ -148,7 +148,6 @@
                 to { height: 15px; }
             }
 
-            /* VOLUME SLIDER STYLING */
             .winamp-vol-container {
                 margin: 8px 0;
                 display: flex;
@@ -203,11 +202,20 @@
             .btn-special { color: #ffff00; }
             /* --- END WINAMP STYLING --- */
 
+            /* TECH JAMS VIDEO STYLING */
             .tech-jams-section {
                 background: #444;
                 border: 4px ridge #ff00ff;
                 padding: 10px;
                 margin-top: 20px;
+            }
+
+            .jam-description {
+                color: white;
+                font-size: 14px;
+                text-align: center;
+                margin-bottom: 15px;
+                line-height: 1.4;
             }
 
             .jam-grid {
@@ -222,31 +230,54 @@
                 background: #000;
                 border: 3px inset #888;
                 padding: 5px;
-                width: 300px; 
+                width: 320px; 
             }
 
             .jam-item video {
                 width: 100%;
                 display: block;
+                background: black; 
             }
 
             .jam-caption {
                 color: #00ff00;
                 font-size: 12px;
                 text-align: center;
-                padding-top: 5px;
+                padding: 5px 0;
                 font-family: 'Courier New', monospace;
             }
 
-            .mute-btn {
-                display: block;
-                width: 100%;
+            .jam-controls-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 margin-top: 5px;
+                padding: 0 5px;
+            }
+
+            .jam-vol-label {
+                color: #fff;
                 font-size: 10px;
+                white-space: nowrap;
+            }
+
+            .jam-slider {
+                flex-grow: 1;
                 cursor: pointer;
+            }
+
+            .jam-mute-btn {
                 background: #333;
                 color: #fff;
                 border: 1px outset #999;
+                font-size: 9px;
+                padding: 2px 4px;
+                cursor: pointer;
+                min-width: 55px;
+            }
+
+            .jam-mute-btn:active {
+                border: 1px inset #999;
             }
 
             .social-box {
@@ -269,19 +300,6 @@
                 text-decoration: none;
                 font-weight: bold;
                 font-size: 12px;
-            }
-
-            .spinning-tech {
-                display: block;
-                margin: 0 auto;
-                border: 5px solid #00ff00;
-                animation: wobble 2s infinite;
-            }
-
-            @keyframes wobble {
-                0% { transform: rotate(0deg); }
-                50% { transform: rotate(8deg); }
-                100% { transform: rotate(0deg); }
             }
 
             .rainbow-hr {
@@ -355,15 +373,10 @@
             <div class="main-table">
                 <div class="inner-content">
                     <h2>.: TECHSMITH'S VIRTUAL LAIR :.</h2>
-                    <img class="spinning-tech" src="/images/android-chrome-512x512.png" alt="techsHMPH" width="150" height="150"/>
+                    <img style="display:block; margin: 0 auto; border: 5px solid #00ff00;" src="/images/android-chrome-512x512.png" alt="techsHMPH" width="150" height="150"/>
                     <p align="center"><b>Welcome to the <font color="blue">#1 Techsmith314 Fan Site</font>!</b></p>
                     <div class="rainbow-hr"></div>
                     <p>Is he still playing Vampire Therapist? <b>YES.</b> Has he finished? <b>NO.</b> Grab a Capri Sun and watch the struggle below.</p>
-                    <div align="center">
-                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif" width="40">
-                        <a href="#cta" style="font-size: 20px; color: green; font-weight: bold;">[ WATCH THE STRUGGLE ]</a>
-                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif" width="40">
-                    </div>
                 </div>
 
                 <section id="cta">
@@ -379,13 +392,22 @@
 
                 <section class="tech-jams-section">
                     <marquee behavior="alternate" scrollamount="3"><font color="#ff00ff" size="4"><b>.: TechJams :.</b></font></marquee>
+                    
+                    <div class="jam-description">
+                        <b>Tech Jam</b> is an annual event where folks from the community make a fun little song and then I play them all on stream.
+                    </div>
+
                     <div class="jam-grid">
                         <div class="jam-item">
-                            <video id="jam-vid-1" autoplay muted loop>
+                            <video id="jam-vid-1" autoplay loop muted playsinline preload="auto">
                                 <source src="https://media.howlongdoesittakefortechtofinish.com/videos/ONI_Tech_Jam.mp4" type="video/mp4">
                             </video>
                             <div class="jam-caption">ONI_Tech_Jam.mp4</div>
-                            <button class="mute-btn" onclick="toggleMute('jam-vid-1', this)">UNMUTE</button>
+                            <div class="jam-controls-row">
+                                <span class="jam-vol-label">VOL:</span>
+                                <input type="range" class="jam-slider" id="jam-vol-slider-1" min="0" max="1" step="0.01" value="0">
+                                <button class="jam-mute-btn" id="jam-mute-btn-1" onclick="toggleJamMute()">UNMUTE</button>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -400,15 +422,9 @@
                             <a href="https://www.youtube.com/@Techsmith314TV" class="social-icon" target="_blank">VODs Youtube</a>
                             <a href="https://www.discord.com/users/techsmith314" class="social-icon" target="_blank">Discord</a>
                         </div>
-                        <a href="#" onclick="alert('The Guestbook is temporarily closed due to toaster failure!')">
-                            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="100" border="0" alt="Sign Guestbook">
-                        </a>
-                        <br><br>
+                        <br>
                         <b>VISITOR NUMBER:</b><br>
                         <div id="counter-box">000420</div>
-                        <br><br>
-                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="80" alt="Netscape">
-                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/3o72FkiKQM4vWLTuuA/giphy.gif" width="80" alt="Construction">
                         <br><br>
                         <font size="1">Copyright 2026 - Optimized for Netscape Navigator</font>
                     </center>
@@ -419,17 +435,44 @@
         <div class="construction-bar"></div>
 
         <script>
+            // Visitor Counter logic
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
-            function toggleMute(videoId, button) {
-                const vid = document.getElementById(videoId);
-                vid.muted = !vid.muted;
-                button.innerText = vid.muted ? "UNMUTE" : "MUTE";
+            // --- TECH JAM VIDEO LOGIC ---
+            const jamVid = document.getElementById('jam-vid-1');
+            const jamSlider = document.getElementById('jam-vol-slider-1');
+            const jamMuteBtn = document.getElementById('jam-mute-btn-1');
+            let lastVol = 0.5;
+
+            function toggleJamMute() {
+                jamVid.muted = !jamVid.muted;
+                if (jamVid.muted) {
+                    jamMuteBtn.innerText = "UNMUTE";
+                    jamSlider.value = 0;
+                } else {
+                    jamMuteBtn.innerText = "MUTE";
+                    jamVid.volume = (jamVid.volume === 0) ? lastVol : jamVid.volume;
+                    jamSlider.value = jamVid.volume;
+                }
             }
 
+            jamSlider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                jamVid.volume = val;
+                if (val > 0) {
+                    jamVid.muted = false;
+                    jamMuteBtn.innerText = "MUTE";
+                    lastVol = val;
+                } else {
+                    jamVid.muted = true;
+                    jamMuteBtn.innerText = "UNMUTE";
+                }
+            });
+
+            // --- WINAMP LOGIC ---
             const playlist = [
                 { name: "AMERICA - Nedini", url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" }
             ];
@@ -440,7 +483,6 @@
             const container = document.getElementById('display-area');
             const volSlider = document.getElementById('volume-control');
 
-            // Initial Volume setup
             audio.volume = 0.4;
 
             volSlider.addEventListener('input', (e) => {
