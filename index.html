@@ -107,6 +107,17 @@
                 font-family: 'Courier New', monospace;
             }
 
+            .mute-btn {
+                display: block;
+                width: 100%;
+                margin-top: 5px;
+                font-size: 10px;
+                cursor: pointer;
+                background: #333;
+                color: #fff;
+                border: 1px outset #999;
+            }
+
             .spinning-tech {
                 display: block;
                 margin: 0 auto;
@@ -228,10 +239,11 @@
                     </p>
                     <div class="jam-grid">
                         <div class="jam-item">
-                            <video controls autoplay muted loop>
+                            <video id="jam-vid-1" autoplay muted loop>
                                 <source src="https://media.howlongdoesittakefortechtofinish.com/videos/ONI_Tech_Jam.mp4" type="video/mp4">
                             </video>
                             <div class="jam-caption">ONI_Tech_Jam.mp4</div>
+                            <button class="mute-btn" onclick="toggleMute('jam-vid-1', this)">UNMUTE</button>
                         </div>
                     </div>
                 </section>
@@ -241,7 +253,7 @@
                 <footer id="footer">
                     <center>
                         <a href="#" onclick="alert('The Guestbook is temporarily closed due to toaster-related hardware failure!')">
-                            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="100" border="0" alt="Sign Guestbook">
+                            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="100" border="0" alt="Sign Guestbook">
                         </a>
                         <br><br>
                         <b>VISITOR NUMBER:</b><br>
@@ -259,16 +271,29 @@
         <div class="construction-bar"></div>
 
         <script>
+            // 1. VISITOR COUNTER
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
+            // 2. VIDEO MUTE TOGGLE
+            function toggleMute(videoId, button) {
+                const vid = document.getElementById(videoId);
+                vid.muted = !vid.muted;
+                button.innerText = vid.muted ? "UNMUTE" : "MUTE";
+            }
+
+            // 3. RANDOMIZED PLAYLIST LOGIC
             const playlist = [
                 { 
                     name: "AMERICA - Nedini", 
                     url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
                 }
+                //, { 
+                //    name: "AMERICA - Nedini", 
+                //    url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
+                //}
             ];
 
             const audio = document.getElementById('bg-audio');
