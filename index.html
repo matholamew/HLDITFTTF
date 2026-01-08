@@ -206,23 +206,33 @@
                 cursor: pointer;
             }
 
-            .winamp-controls { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px; }
+            .winamp-controls { display: flex; flex-direction: column; gap: 4px; }
+            .control-row { display: flex; justify-content: space-between; gap: 2px; }
 
             .winamp-btn {
                 background: #3c3c5c;
                 border: 2px outset #6b6b9e;
                 color: white;
-                font-size: 9px;
-                padding: 4px 2px;
+                font-size: 12px;
+                padding: 6px 2px;
                 flex: 1;
                 cursor: pointer;
                 font-weight: bold;
                 text-transform: uppercase;
                 min-width: 42px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
             .winamp-btn:active { border: 2px inset #6b6b9e; }
-            .btn-special { color: #ffff00; }
+            .btn-wide { flex: none; width: 100%; }
+
+            #shuffle-toggle-btn.active {
+                color: #ffff00;
+                border-color: #ffff00;
+                background: #4a4a7d;
+            }
 
             .tech-jams-section { background: #444; border: 4px ridge #ff00ff; padding: 10px; margin-top: 20px; }
             .jam-description { color: white; font-size: 14px; text-align: center; margin-bottom: 15px; line-height: 1.4; }
@@ -247,7 +257,7 @@
             <div id="playlist-window" class="draggable-window">
                 <div class="playlist-header" id="playlist-handle" style="display: flex; justify-content: space-between; align-items: center;">
                     <span>WINAMP PLAYLIST</span>
-                    <button onclick="shuffleMusic()" style="font-size: 8px; cursor: pointer; background: #3c3c5c; color: white; border: 1px outset #6b6b9e; padding: 1px 3px;">SHUFFLE LIST</button>
+                    <button id="shuffle-toggle-btn" onclick="toggleShuffle()" style="font-size: 8px; cursor: pointer; background: #3c3c5c; color: white; border: 1px outset #6b6b9e; padding: 1px 3px;">SHUFFLE: OFF</button>
                 </div>
                 <div id="playlist-items"></div>
             </div>
@@ -275,13 +285,15 @@
                 </div>
 
                 <div class="winamp-controls">
-                    <button class="winamp-btn" onclick="playMusic()">PLAY</button>
-                    <button class="winamp-btn" onclick="pauseMusic()">PAUSE</button>
-                    <button class="winamp-btn" onclick="stopMusic()">STOP</button>
-                    <button class="winamp-btn btn-special" onclick="loadPrevSong()">PREV</button>
-                    <button class="winamp-btn btn-special" onclick="loadNextSong()">NEXT</button>
-                    <button class="winamp-btn btn-special" onclick="shuffleMusic()">SHUFFLE</button>
-                    <button class="winamp-btn" onclick="togglePlaylist()">LIST</button>
+                    <div class="control-row">
+                        <button class="winamp-btn" onclick="loadPrevSong()" title="Previous">&#9198;</button>
+                        <button class="winamp-btn" id="play-pause-btn" onclick="handlePlayPause()" title="Play/Pause">&#9654;</button>
+                        <button class="winamp-btn" onclick="stopMusic()" title="Stop">&#9632;</button>
+                        <button class="winamp-btn" onclick="loadNextSong()" title="Next">&#9197;</button>
+                    </div>
+                    <div class="control-row">
+                        <button class="winamp-btn btn-wide" onclick="togglePlaylist()">LIST</button>
+                    </div>
                 </div>
                 <audio id="bg-audio"></audio>
             </div>
@@ -364,73 +376,26 @@
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
-            // --- DRAG & SNAP LOGIC ---
+            // --- DRAG LOGIC ---
             let highestZ = 9999;
-            const snapThreshold = 20;
-
             function makeDraggable(element, handle, otherElementId) {
                 let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-                handle.onmousedown = dragMouseDown;
-
-                function dragMouseDown(e) {
-                    e = e || window.event;
+                handle.onmousedown = (e) => {
                     e.preventDefault();
                     highestZ++;
                     element.style.zIndex = highestZ;
-                    pos3 = e.clientX;
-                    pos4 = e.clientY;
-                    document.onmouseup = closeDragElement;
-                    document.onmousemove = elementDrag;
-                }
-
-                function elementDrag(e) {
-                    e = e || window.event;
-                    e.preventDefault();
-                    pos1 = pos3 - e.clientX;
-                    pos2 = pos4 - e.clientY;
-                    pos3 = e.clientX;
-                    pos4 = e.clientY;
-                    let newTop = element.offsetTop - pos2;
-                    let newLeft = element.offsetLeft - pos1;
-                    const other = document.getElementById(otherElementId);
-                    if (other && other.style.display !== 'none') {
-                        if (Math.abs(newTop - (other.offsetTop + other.offsetHeight)) < snapThreshold) newTop = other.offsetTop + other.offsetHeight;
-                        else if (Math.abs((newTop + element.offsetHeight) - other.offsetTop) < snapThreshold) newTop = other.offsetTop - element.offsetHeight;
-                        if (Math.abs(newLeft - (other.offsetLeft + other.offsetWidth)) < snapThreshold) newLeft = other.offsetLeft + other.offsetWidth;
-                        else if (Math.abs((newLeft + element.offsetWidth) - other.offsetLeft) < snapThreshold) newLeft = other.offsetLeft - element.offsetWidth;
-                        if (Math.abs(newLeft - other.offsetLeft) < snapThreshold) newLeft = other.offsetLeft;
-                        if (Math.abs((newLeft + element.offsetWidth) - (other.offsetLeft + other.offsetWidth)) < snapThreshold) newLeft = other.offsetLeft + other.offsetWidth - element.offsetWidth;
-                    }
-                    element.style.top = newTop + "px";
-                    element.style.left = newLeft + "px";
-                }
-
-                function closeDragElement() {
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                }
+                    pos3 = e.clientX; pos4 = e.clientY;
+                    document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                    document.onmousemove = (e) => {
+                        pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+                        pos3 = e.clientX; pos4 = e.clientY;
+                        element.style.top = (element.offsetTop - pos2) + "px";
+                        element.style.left = (element.offsetLeft - pos1) + "px";
+                    };
+                };
             }
-
             makeDraggable(document.getElementById("winamp-container"), document.getElementById("player-handle"), "playlist-window");
             makeDraggable(document.getElementById("playlist-window"), document.getElementById("playlist-handle"), "winamp-container");
-
-            // --- TECH JAM VIDEO LOGIC ---
-            const jamVid = document.getElementById('jam-vid-1');
-            const jamSlider = document.getElementById('jam-vol-slider-1');
-            const jamMuteBtn = document.getElementById('jam-mute-btn-1');
-            let lastVol = 0.5;
-
-            function toggleJamMute() {
-                jamVid.muted = !jamVid.muted;
-                if (jamVid.muted) { jamMuteBtn.innerText = "UNMUTE"; jamSlider.value = 0; }
-                else { jamMuteBtn.innerText = "MUTE"; jamVid.volume = (jamVid.volume === 0) ? lastVol : jamVid.volume; jamSlider.value = jamVid.volume; }
-            }
-
-            jamSlider.addEventListener('input', (e) => {
-                const val = e.target.value; jamVid.volume = val;
-                if (val > 0) { jamVid.muted = false; jamMuteBtn.innerText = "MUTE"; lastVol = val; }
-                else { jamVid.muted = true; jamMuteBtn.innerText = "UNMUTE"; }
-            });
 
             // --- WINAMP LOGIC ---
             const playlist = [
@@ -447,99 +412,117 @@
                 { name: "Madness - bucho54", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Madness%20-%20bucho54.mp3" },
                 { name: "Pog in the P Grampaw - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Pog%20in%20the%20P%20Grampaw%20-%20Techsmith314.mp3" },
                 { name: "Self Esteem - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Self%20Esteem%20-%20Techsmith314.mp3" },
-                { name: "Man Clam - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Techsmith314_-_Man_Clam.mp3" }
+                { name: "Man Clam - Techsmith314", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Techsmith314_-_Man_Clam.mp3" },
+                { name: "Lady Bigfoot - Vercingetorix4", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Lady%20Bigfoot%20-%20Vercingetorix.mp3" },
+                { name: "Techfire 9000 - Vercingetorix4", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Techfire%209000%20-%20Vercingetorix.mp3" }
             ];
 
-            let currentListPosition = 0; 
-            let shuffledIndices = playlist.map((_, i) => i); 
-
+            let currentIndex = 0;
+            let isShuffle = false;
             const audio = document.getElementById('bg-audio');
+            const playPauseBtn = document.getElementById('play-pause-btn');
             const display = document.getElementById('now-playing');
             const timer = document.getElementById('timer');
             const container = document.getElementById('display-area');
             const volSlider = document.getElementById('volume-control');
             const playlistWindow = document.getElementById('playlist-window');
             const playlistItemsContainer = document.getElementById('playlist-items');
+            const shuffleBtn = document.getElementById('shuffle-toggle-btn');
 
             function renderPlaylistUI() {
                 playlistItemsContainer.innerHTML = '';
-                shuffledIndices.forEach((originalIndex, i) => {
-                    const track = playlist[originalIndex];
+                playlist.forEach((track, i) => {
                     const div = document.createElement('div');
-                    div.className = 'playlist-item';
-                    div.id = 'pos-' + i;
+                    div.className = 'playlist-item' + (i === currentIndex ? ' active' : '');
+                    div.id = 'track-' + i;
                     div.innerText = (i + 1) + ". " + track.name;
-                    div.onclick = () => playFromListPosition(i);
-                    if (i === currentListPosition) div.classList.add('active');
+                    div.onclick = () => playTrack(i);
                     playlistItemsContainer.appendChild(div);
                 });
             }
 
-            function playFromListPosition(pos) {
-                currentListPosition = pos;
-                const trackIndex = shuffledIndices[pos];
-                const track = playlist[trackIndex];
+            function playTrack(index) {
+                currentIndex = index;
+                audio.src = playlist[index].url;
+                let shuffleTag = isShuffle ? "[SHUFFLE] " : "";
+                display.innerText = shuffleTag + (index + 1) + ". " + playlist[index].name;
                 
-                audio.src = track.url;
-                display.innerText = (pos + 1) + ". " + track.name;
-                
-                document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
-                const activeEl = document.getElementById('pos-' + pos);
-                if (activeEl) {
-                    activeEl.classList.add('active');
-                    // Optional: Scroll to the active item
-                    activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+                renderPlaylistUI();
+                const activeEl = document.getElementById('track-' + index);
+                if (activeEl) activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 
                 playMusic();
             }
 
+            function handlePlayPause() {
+                if (audio.paused) playMusic();
+                else pauseMusic();
+            }
+
+            function playMusic() {
+                audio.play().catch(() => console.log("Interaction needed"));
+                container.classList.add('playing');
+                playPauseBtn.innerHTML = "&#10074;&#10074;"; // Pause icon
+            }
+
+            function pauseMusic() {
+                audio.pause();
+                container.classList.remove('playing');
+                playPauseBtn.innerHTML = "&#9654;"; // Play icon
+            }
+
+            function stopMusic() {
+                audio.pause();
+                audio.currentTime = 0;
+                container.classList.remove('playing');
+                playPauseBtn.innerHTML = "&#9654;";
+            }
+
             function loadNextSong() {
-                let nextPos = currentListPosition + 1;
-                if (nextPos >= playlist.length) nextPos = 0; 
-                playFromListPosition(nextPos);
+                if (isShuffle) {
+                    let next;
+                    do { next = Math.floor(Math.random() * playlist.length); } while (next === currentIndex && playlist.length > 1);
+                    playTrack(next);
+                } else {
+                    playTrack((currentIndex + 1) % playlist.length);
+                }
             }
 
             function loadPrevSong() {
-                let prevPos = currentListPosition - 1;
-                if (prevPos < 0) prevPos = playlist.length - 1; 
-                playFromListPosition(prevPos);
+                let prev = currentIndex - 1;
+                if (prev < 0) prev = playlist.length - 1;
+                playTrack(prev);
             }
 
-            function shuffleMusic() {
-                shuffledIndices.sort(() => Math.random() - 0.5);
-                renderPlaylistUI();
-                playFromListPosition(0); 
+            function toggleShuffle() {
+                isShuffle = !isShuffle;
+                shuffleBtn.classList.toggle('active');
+                shuffleBtn.innerText = "SHUFFLE: " + (isShuffle ? "ON" : "OFF");
+                // Update display tag
+                let shuffleTag = isShuffle ? "[SHUFFLE] " : "";
+                display.innerText = shuffleTag + (currentIndex + 1) + ". " + playlist[currentIndex].name;
             }
 
             function togglePlaylist() {
                 const isHidden = (playlistWindow.style.display === 'none' || playlistWindow.style.display === '');
-                if (isHidden) { 
-                    playlistWindow.style.display = 'block';
-                    highestZ++;
-                    playlistWindow.style.zIndex = highestZ;
-                }
-                else { playlistWindow.style.display = 'none'; }
+                playlistWindow.style.display = isHidden ? 'block' : 'none';
+                if (isHidden) { highestZ++; playlistWindow.style.zIndex = highestZ; }
             }
 
-            audio.volume = 0.4;
-            volSlider.addEventListener('input', (e) => { audio.volume = e.target.value; });
+            // Events
+            volSlider.addEventListener('input', (e) => audio.volume = e.target.value);
             audio.addEventListener('timeupdate', () => {
-                let mins = Math.floor(audio.currentTime / 60);
-                let secs = Math.floor(audio.currentTime % 60);
-                timer.innerText = (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+                let m = Math.floor(audio.currentTime / 60);
+                let s = Math.floor(audio.currentTime % 60);
+                timer.innerText = (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
             });
             audio.addEventListener('ended', loadNextSong);
 
-            function playMusic() { audio.play().catch(e => console.log("User interaction needed")); container.classList.add('playing'); }
-            function pauseMusic() { audio.pause(); container.classList.remove('playing'); }
-            function stopMusic() { audio.pause(); audio.currentTime = 0; container.classList.remove('playing'); }
-
             // Init
+            audio.volume = 0.4;
             renderPlaylistUI();
-            playFromListPosition(0);
-            pauseMusic(); 
+            playTrack(0);
+            pauseMusic();
         </script>
     </body>
 </html>
-
