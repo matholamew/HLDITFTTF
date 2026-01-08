@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>*** HLDITFTTF? - TECHSMITH'S LAIR ***</title>
+        <title>HLDITFTTF? - TECHSMITH'S LAIR</title>
         <link rel="icon" href="/images/favicon.ico" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -18,40 +18,34 @@
 
             html { cursor: url('https://cur.cursors-4u.net/anime/ani-1/ani11.cur'), auto; }
 
-            #music-player {
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background: #333;
-                border: 3px outset #999;
-                padding: 5px;
-                z-index: 1000;
-                font-size: 10px;
-                color: #00ff00;
-                width: 150px;
-            }
-
             header {
-                /* FIXED: Added background-size: cover so the fire fills the whole bar */
                 background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif');
                 background-size: cover;
-                background-position: center;
-                padding: 40px 20px; /* Increased padding to see more fire */
+                background-position: bottom;
+                /* MASSIVE PADDING FOR TALLER GIF */
+                padding: 120px 20px; 
                 text-align: center;
                 border-bottom: 5px solid yellow;
             }
 
             .fire-text {
-                font-size: 60px;
+                font-size: 85px; 
                 font-weight: bold;
                 color: white;
-                text-shadow: 0 0 10px #000, 0 0 20px #ff0000;
+                /* HEAVY BLACK STROKE FOR READABILITY */
+                text-shadow: 
+                    -4px -4px 0 #000,  
+                     4px -4px 0 #000,
+                    -4px  4px 0 #000,
+                     4px  4px 0 #000,
+                     0 0 30px #ff0000; 
                 animation: flicker 0.1s infinite;
+                letter-spacing: 5px;
             }
 
             @keyframes flicker {
                 0% { transform: scale(1); }
-                50% { transform: scale(1.02); }
+                50% { transform: scale(1.01); }
                 100% { transform: scale(1); }
             }
 
@@ -76,6 +70,7 @@
                 color: white;
                 padding: 5px;
                 text-align: center;
+                font-size: 18px;
             }
 
             .spinning-tech {
@@ -87,13 +82,12 @@
 
             @keyframes wobble {
                 0% { transform: rotate(0deg); }
-                50% { transform: rotate(10deg); }
+                50% { transform: rotate(8deg); }
                 100% { transform: rotate(0deg); }
             }
 
             .rainbow-hr {
-                height: 15px;
-                /* Stable Rainbow Line */
+                height: 12px;
                 background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
                 border: 2px solid #000;
                 margin: 20px 0;
@@ -114,13 +108,26 @@
                 height: 20px;
                 background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
             }
+
+            #music-player {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: #333;
+                border: 3px outset #999;
+                padding: 5px;
+                z-index: 1000;
+                font-size: 10px;
+                color: #00ff00;
+                width: 150px;
+            }
         </style>
     </head>
-    <body onload="scrollStatus()">
+    <body>
 
         <div id="music-player">
             <b>WINAMP 2.91</b><br>
-            <marquee scrollamount="2" width="100%">Now Playing: tech_theme_midi_v3.mid</marquee>
+            <marquee scrollamount="2" width="100%">Now Playing: tech_theme_midi_v4.mid</marquee>
             <button onclick="document.getElementById('bg-audio').play()" style="font-size: 9px;">PLAY</button>
             <button onclick="document.getElementById('bg-audio').pause()" style="font-size: 9px;">STOP</button>
             <audio id="bg-audio" loop>
@@ -130,7 +137,7 @@
 
         <div class="construction-bar"></div>
         <marquee bg-color="red" style="color:white; font-weight:bold;">
-            *** BREAKING NEWS: TECH IS STILL IN THE VAMPIRE OFFICE *** GUESTBOOK IS CURRENTLY UNDER REPAIR ***
+            *** BREAKING NEWS! TECH IS STILL A BUTT! *** BUT YOU ALREADY KNEW THAT. *** DON'T FORGET TO SIGN THE GUESTBOOK ***
         </marquee>
 
         <header id="header">
@@ -147,7 +154,7 @@
                     <p align="center"><b>Welcome to the <font color="blue">#1 Techsmith314 Fan Site</font>!</b></p>
                     <div class="rainbow-hr"></div>
 
-                    <p>Will Tech ever finish Vampire Therapist? Legend says he is still in the first chapter. Modern science has no explanation.</p>
+                    <p>Is he still playing Vampire Therapist? <b>YES.</b> Has he finished? <b>NO.</b> Grab a Capri Sun and watch the eternal struggle below.</p>
                     
                     <div align="center">
                         <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif" width="40">
@@ -171,7 +178,7 @@
 
                 <footer id="footer">
                     <center>
-                        <a href="#" onclick="alert('The Guestbook is temporarily closed due to a toaster-related overflow error!')">
+                        <a href="#" onclick="alert('The Guestbook is temporarily closed due to toaster-related hardware failure!')">
                             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="100" border="0" alt="Sign Guestbook">
                         </a>
                         <br><br>
@@ -194,13 +201,6 @@
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
-
-            let msg = " *** Welcome to Tech's Lair... Don't feed the toasters... *** ";
-            function scrollStatus() {
-                msg = msg.substring(1) + msg.substring(0, 1);
-                window.status = msg;
-                setTimeout("scrollStatus()", 150);
-            }
         </script>
     </body>
 </html>
