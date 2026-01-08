@@ -465,7 +465,8 @@
                 { name: "The Baby Stairs - FabulousCuddle", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Baby%20Stairs%20-%20FabulousCuddle.mp3" },
                 { name: "Oddly Sexual - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Oddly%20Sexual%20-%20BagOfBurritos.mp3" },
                 { name: "Uh Fuck - BagOfBurritos", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Uh%20Fuck%20-%20BagOfBurritos.mp3" },
-                { name: "The Struggle (Stop Look Think) - shay_the_skunk", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Struggle%20(Stop%20Look%20Think)%20-%20Shay%20the%20Skunk.mp3" }
+                { name: "The Struggle (Stop Look Think) - shay_the_skunk", url: "https://media.howlongdoesittakefortechtofinish.com/songs/The%20Struggle%20(Stop%20Look%20Think)%20-%20Shay%20the%20Skunk.mp3" },
+                { name: "Song of Gawks - eurobeatviking", url: "https://media.howlongdoesittakefortechtofinish.com/songs/Song%20of%20Gawks%20-%20Eurobeatviking.mp3" }                
             ];
 
             let currentTrackIndex = 0;
@@ -479,14 +480,21 @@
 
             function renderRandomizedPlaylist() {
                 playlistItemsContainer.innerHTML = '';
+                // Create a list of indices and shuffle them
                 let indices = playlist.map((_, i) => i);
                 indices.sort(() => Math.random() - 0.5);
-                indices.forEach((originalIndex) => {
+                
+                // i represents the position in the list (1, 2, 3...)
+                // originalIndex is which song from the playlist array is at that position
+                indices.forEach((originalIndex, i) => {
                     const track = playlist[originalIndex];
                     const div = document.createElement('div');
                     div.className = 'playlist-item';
                     div.id = 'track-' + originalIndex;
-                    div.innerText = (originalIndex + 1) + ". " + track.name;
+                    
+                    // Display the sequential number (i + 1) regardless of which song it is
+                    div.innerText = (i + 1) + ". " + track.name;
+                    
                     div.onclick = () => playSpecificTrack(originalIndex);
                     if (originalIndex === currentTrackIndex) div.classList.add('active');
                     playlistItemsContainer.appendChild(div);
@@ -543,4 +551,5 @@
         </script>
     </body>
 </html>
+
 
