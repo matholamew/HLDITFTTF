@@ -1,89 +1,204 @@
 <!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
-	<head>
-		<title>HLDITFTTF?</title>
-		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="landing is-preload">
+    <head>
+        <title>*** HLDITFTTF? - TECHSMITH'S LAIR ***</title>
+        <link rel="icon" href="https://fav.farm/🍞" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        
+        <style>
+            /* THE GEOCITIES CORE */
+            body {
+                background-color: #000000;
+                background-image: url('https://web.archive.org/web/20091024031526im_/http://geocities.com/Area51/Station/7057/stars_bg.gif');
+                color: #ffffff;
+                font-family: "Comic Sans MS", cursive;
+                margin: 0;
+                padding: 0;
+            }
 
-		<!-- Page Wrapper -->
-			<div id="page-wrapper">
+            /* Custom Cursor - The classic trailing star feel */
+            html { cursor: url('https://cur.cursors-4u.net/anime/ani-1/ani11.cur'), auto; }
 
-				<!-- Header -->
-					<header id="header" class="alt">
-						<h1><a href="index.html">HLDITFTTF?</a></h1>
-					</header>
+            /* Winamp-style Player */
+            #music-player {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: #333;
+                border: 3px outset #999;
+                padding: 5px;
+                z-index: 1000;
+                font-size: 10px;
+                color: #00ff00;
+                width: 150px;
+            }
 
-				<!-- Banner -->
-					<section id="banner">
-						<div class="inner">
-							<h2>HOW LONG DOES IT TAKE FOR TECH TO FINISH?</h2>
-							<br><br><br>
-							<img width="150" height="150" src="/images/android-chrome-512x512.png" alt="techsHMPH by HazzardGurl" border="0"/>
-							<p>The short answer to this question is nobody knows.<br>
-								In one of Tech's most recent playthroughs he was playing Vampire Therapist.<br>
-								This 4-hour game has now taken him 5 full days of streaming.</p>
-						</div>
-						<a href="#cta" class="more scrolly">Watch Now</a>
-					</section>
+            header {
+                background: url('https://web.archive.org/web/20091027083011im_/http://www.geocities.com/Hollywood/Hills/8944/flame.gif');
+                padding: 20px;
+                text-align: center;
+                border-bottom: 5px solid yellow;
+            }
 
-				<!-- Twitch embed -->
-					<section id="cta" class="wrapper style4">
-						<div class="twitch">
-							<!-- Add a placeholder for the Twitch embed -->
-							<div id="twitch-embed"></div>
+            header h1 a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 60px;
+                text-shadow: 4px 4px #ff0000;
+            }
 
-							<!-- Load the Twitch embed JavaScript file -->
-							<script src="https://embed.twitch.tv/embed/v1.js"></script>
+            /* Main Table Layout (The proper 90s way) */
+            .main-table {
+                width: 90%;
+                max-width: 900px;
+                margin: 20px auto;
+                background: #c0c0c0;
+                color: #000;
+                border: 10px ridge #eee;
+                padding: 15px;
+            }
 
-							<!-- Create a Twitch.Embed object that will render within the "twitch-embed" element -->
-							<script type="text/javascript">
-							new Twitch.Embed("twitch-embed", {
-								width: "100%",
-								height: "100%",
-								channel: "techsmith314",
-								muted: "true",
-								parent: ["www.howlongdoesittakefortechtofinish.com"]
-							});
-							</script>
-						</div>
-					</section>
+            .inner-content {
+                border: 2px inset #fff;
+                background: #fff;
+                padding: 20px;
+            }
 
-				<!-- Footer -->
-					<footer id="footer">
-						<ul class="icons">
-							<li><a href="https://www.twitch.tv/techsmith314" class="icon brands fa-twitch"><span class="label">Twitch</span></a></li>
-							<li><a href="https://www.discord.com/users/techsmith314" class="icon brands fa-discord"><span class="label">Discord</span></a></li>
-							<li><a href="https://www.youtube.com/c/Techsmith314TV" class="icon brands fa-youtube"><span class="label">YouTube</span></a></li>
-							<li><a href="https://www.x.com/Techsmith314" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-						</ul>
-						<ul class="copyright">
-							<li>&copy; 2024 <a href="https://www.twitch.tv/techsmith314">Techsmith314</a></li>
-						</ul>
-					</footer>
+            h2 {
+                color: blue;
+                text-align: center;
+                text-transform: uppercase;
+                border-bottom: 2px dashed red;
+            }
 
-			</div>
+            .spinning-tech {
+                display: block;
+                margin: 0 auto;
+                border: 5px solid #00ff00;
+                animation: wobble 2s infinite;
+            }
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+            @keyframes wobble {
+                0% { transform: rotate(0deg) scale(1); }
+                50% { transform: rotate(10deg) scale(1.1); }
+                100% { transform: rotate(0deg) scale(1); }
+            }
 
-	</body>
+            /* The Twitch Embed Container */
+            #cta {
+                background: #000;
+                padding: 10px;
+                border: 5px double #ff00ff;
+                margin-top: 20px;
+            }
+
+            /* Footer Socials */
+            .icons {
+                list-style: none;
+                padding: 0;
+                text-align: center;
+            }
+
+            .icons li { display: inline; margin: 0 10px; }
+
+            .icons a {
+                background: #ffff00;
+                color: #000;
+                padding: 5px;
+                font-weight: bold;
+                border: 2px outset #000;
+                text-decoration: none;
+            }
+
+            /* Flashing Elements */
+            .flash { animation: blinker 0.5s step-start infinite; }
+            @keyframes blinker { 50% { opacity: 0; } }
+
+            .construction-bar {
+                width: 100%;
+                height: 20px;
+                background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
+            }
+        </style>
+    </head>
+    <body class="landing">
+
+        <div id="music-player">
+            <b>WINAMP 2.91</b><br>
+            <marquee scrollamount="2" width="100%">Now Playing: tech_theme_midi_v2.mp3</marquee>
+            <button onclick="document.getElementById('bg-audio').play()" style="font-size: 9px;">PLAY</button>
+            <button onclick="document.getElementById('bg-audio').pause()" style="font-size: 9px;">STOP</button>
+            <audio id="bg-audio" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <div class="construction-bar"></div>
+        <marquee bg-color="red" style="color:white; font-weight:bold;">*** WELCOME TO THE TOASTER ZONE *** YOU ARE VISITOR #000420 *** DON'T FORGET TO SIGN THE GUESTBOOK ***</marquee>
+
+        <div id="page-wrapper">
+            <header id="header">
+                <h1 class="flash"><a href="index.html">HLDITFTTF?</a></h1>
+            </header>
+
+            <center>
+                <div class="main-table">
+                    <div class="inner-content">
+                        <h2>HOW LONG DOES IT TAKE FOR TECH TO FINISH?</h2>
+                        
+                        <img class="spinning-tech" src="/images/android-chrome-512x512.png" alt="techsHMPH" width="150" height="150"/>
+                        
+                        <p align="center">
+                            <b>The short answer: <font color="red" size="6">NOBODY KNOWS.</font></b>
+                        </p>
+
+                        <p>In one of Tech's most recent playthroughs he was playing <i>Vampire Therapist</i>. 
+                           This 4-hour game has now taken him <b>5 FULL DAYS</b> of streaming. 
+                           Is he okay? Is the toaster okay? We may never know.</p>
+                        
+                        <div align="center">
+                            <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif">
+                            <a href="#cta" style="font-size: 20px; color: green;"><b>[ ENTER THE STREAM ]</b></a>
+                            <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif">
+                        </div>
+                    </div>
+
+                    <section id="cta">
+                        <div id="twitch-embed"></div>
+                        <script src="https://embed.twitch.tv/embed/v1.js"></script>
+                        <script type="text/javascript">
+                        new Twitch.Embed("twitch-embed", {
+                            width: "100%",
+                            height: "400",
+                            channel: "techsmith314",
+                            muted: "false",
+                            parent: ["www.howlongdoesittakefortechtofinish.com"]
+                        });
+                        </script>
+                    </section>
+
+                    <footer id="footer">
+                        <hr>
+                        <p align="center"><b>FIND TECH ON THE INFORMATION SUPERHIGHWAY:</b></p>
+                        <ul class="icons">
+                            <li><a href="https://www.twitch.tv/techsmith314">TWITCH</a></li>
+                            <li><a href="https://www.discord.com/users/techsmith314">DISCORD</a></li>
+                            <li><a href="https://www.youtube.com/c/Techsmith314TV">YOUTUBE</a></li>
+                            <li><a href="https://www.x.com/Techsmith314">TWITTER</a></li>
+                        </ul>
+                        <center>
+                            <br>
+                            <img src="https://web.archive.org/web/20090831190100im_/http://geocities.com/Heartland/6561/undercon.gif">
+                            <br>
+                            <font size="1">Copyright 2024 Techsmith314 - Optimized for Netscape Navigator 4.0</font>
+                        </center>
+                    </footer>
+                </div>
+            </center>
+        </div>
+
+        <div class="construction-bar"></div>
+
+    </body>
 </html>
