@@ -124,11 +124,14 @@
                 justify-content: center;
                 gap: 10px;
                 margin: 15px 0;
+                flex-wrap: wrap;
             }
 
             .social-icon {
-                width: 32px;
+                width: auto;
+                min-width: 40px;
                 height: 32px;
+                padding: 0 10px;
                 background: yellow;
                 border: 2px outset #fff;
                 display: flex;
@@ -137,7 +140,7 @@
                 color: black;
                 text-decoration: none;
                 font-weight: bold;
-                font-size: 18px;
+                font-size: 12px;
                 font-family: Arial, sans-serif;
             }
 
@@ -303,26 +306,25 @@
         <div class="construction-bar"></div>
 
         <script>
+            // 1. VISITOR COUNTER
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
+            // 2. VIDEO MUTE TOGGLE
             function toggleMute(videoId, button) {
                 const vid = document.getElementById(videoId);
                 vid.muted = !vid.muted;
                 button.innerText = vid.muted ? "UNMUTE" : "MUTE";
             }
 
+            // 3. WINAMP PLAYLIST
             const playlist = [
                 { 
                     name: "AMERICA - Nedini", 
                     url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
                 }
-                //, { 
-                //    name: "AMERICA - Nedini", 
-                //    url: "https://media.howlongdoesittakefortechtofinish.com/songs/AMERICA%20-%20Nedini.mp3" 
-                //}
             ];
 
             const audio = document.getElementById('bg-audio');
