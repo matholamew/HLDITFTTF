@@ -1,13 +1,12 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>HLDITFTTF? - TECHSMITH'S LAIR</title>
+        <title>*** HLDITFTTF? - TECHSMITH'S LAIR ***</title>
         <link rel="icon" href="/images/favicon.ico" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         
         <style>
-            /* THE GEOCITIES CORE */
             body {
                 background-color: #000000;
                 background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
@@ -15,26 +14,9 @@
                 font-family: "Comic Sans MS", cursive;
                 margin: 0;
                 padding: 0;
-                /* Custom Scrollbar for Internet Explorer vibes */
-                scrollbar-face-color: #c0c0c0;
-                scrollbar-shadow-color: #000000;
-                scrollbar-highlight-color: #ffffff;
-                scrollbar-3dlight-color: #dfdfdf;
-                scrollbar-darkshadow-color: #444444;
-                scrollbar-track-color: #333333;
-                scrollbar-arrow-color: #ff0000;
             }
 
-            /* The Floating "New" Icon */
-            .new-icon {
-                vertical-align: middle;
-                animation: pulse 1s infinite;
-            }
-            @keyframes pulse {
-                0% { opacity: 1; }
-                50% { opacity: 0; }
-                100% { opacity: 1; }
-            }
+            html { cursor: url('https://cur.cursors-4u.net/anime/ani-1/ani11.cur'), auto; }
 
             #music-player {
                 position: fixed;
@@ -50,24 +32,27 @@
             }
 
             header {
+                /* FIXED: Added background-size: cover so the fire fills the whole bar */
                 background: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif');
-                padding: 20px;
+                background-size: cover;
+                background-position: center;
+                padding: 40px 20px; /* Increased padding to see more fire */
                 text-align: center;
                 border-bottom: 5px solid yellow;
             }
 
-            /* Flaming Text Effect */
             .fire-text {
                 font-size: 60px;
                 font-weight: bold;
                 color: white;
-                text-shadow: 0 0 20px #fefcc9, 10px -10px 30px #feec85, -20px -20px 40px #ffae34, 20px -40px 50px #ec760c, -20px -60px 60px #cd4606, 0 -80px 70px #973716, 10px -90px 80px #451b0e;
+                text-shadow: 0 0 10px #000, 0 0 20px #ff0000;
                 animation: flicker 0.1s infinite;
             }
+
             @keyframes flicker {
-                0% { transform: skewX(1deg); }
-                50% { transform: skewX(-1deg); }
-                100% { transform: skewX(1deg); }
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
             }
 
             .main-table {
@@ -87,11 +72,10 @@
             }
 
             h2 {
-                color: blue;
-                text-align: center;
-                background: linear-gradient(to right, #000080, #1e90ff); /* Windows 95 Title Bar */
+                background: linear-gradient(to right, #000080, #1e90ff);
                 color: white;
                 padding: 5px;
+                text-align: center;
             }
 
             .spinning-tech {
@@ -102,15 +86,16 @@
             }
 
             @keyframes wobble {
-                0% { transform: rotate(0deg) scale(1); }
-                50% { transform: rotate(10deg) scale(1.1); }
-                100% { transform: rotate(0deg) scale(1); }
+                0% { transform: rotate(0deg); }
+                50% { transform: rotate(10deg); }
+                100% { transform: rotate(0deg); }
             }
 
             .rainbow-hr {
                 height: 15px;
-                background: url('https://web.archive.org/web/20091027054045im_/http://geocities.com/Tokyo/Temple/8443/rainbow_line.gif');
-                border: none;
+                /* Stable Rainbow Line */
+                background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+                border: 2px solid #000;
                 margin: 20px 0;
             }
 
@@ -118,9 +103,16 @@
                 background: #000;
                 color: #ff0000;
                 font-family: 'Courier New', Courier, monospace;
-                padding: 2px 5px;
-                border: 2px inset #555;
-                font-size: 18px;
+                padding: 5px 10px;
+                border: 3px inset #555;
+                font-size: 24px;
+                display: inline-block;
+            }
+
+            .construction-bar {
+                width: 100%;
+                height: 20px;
+                background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
             }
         </style>
     </head>
@@ -137,9 +129,8 @@
         </div>
 
         <div class="construction-bar"></div>
-        <marquee bg-color="red" style="color:white; font-weight:bold; height: 30px; line-height: 30px;">
-            <img src="https://web.archive.org/web/20091027083134im_/http://www.geocities.com/TimesSquare/Arcade/7172/new2.gif" class="new-icon"> 
-            BREAKING NEWS: TOASTER STATUS IS UNKNOWN *** THE GUESTBOOK IS NOW OPEN *** OPTIMIZED FOR 800x600 RESOLUTION ***
+        <marquee bg-color="red" style="color:white; font-weight:bold;">
+            *** BREAKING NEWS: TECH IS STILL IN THE VAMPIRE OFFICE *** GUESTBOOK IS CURRENTLY UNDER REPAIR ***
         </marquee>
 
         <header id="header">
@@ -149,19 +140,19 @@
         <center>
             <div class="main-table">
                 <div class="inner-content">
-                    <h2>.: HOW LONG DOES IT TAKE FOR TECH TO FINISH? :.</h2>
+                    <h2>.: TECHSMITH'S VIRTUAL LAIR :.</h2>
                     
                     <img class="spinning-tech" src="/images/android-chrome-512x512.png" alt="techsHMPH" width="150" height="150"/>
                     
-                    <p align="center"><b>Welcome to the <font color="blue">#1 Techsmith314 Fan Site</font> on the web!</b></p>
+                    <p align="center"><b>Welcome to the <font color="blue">#1 Techsmith314 Fan Site</font>!</b></p>
                     <div class="rainbow-hr"></div>
 
-                    <p>You are viewing this site in the year 2026. Tech is still playing <i>Vampire Therapist</i>. This is not a drill. It is a tragedy.</p>
+                    <p>Will Tech ever finish Vampire Therapist? Legend says he is still in the first chapter. Modern science has no explanation.</p>
                     
                     <div align="center">
-                        <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif">
-                        <a href="#cta" style="font-size: 20px; color: green; font-weight: bold;">[ WATCH THE STRUGGLE HERE ]</a>
-                        <img src="https://web.archive.org/web/20090804113154im_/http://geocities.com/SiliconValley/Heights/9882/images/fire.gif">
+                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif" width="40">
+                        <a href="#cta" style="font-size: 20px; color: green; font-weight: bold;">[ WATCH THE STRUGGLE ]</a>
+                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/Lopx9eUi34rbq/giphy.gif" width="40">
                     </div>
                 </div>
 
@@ -180,17 +171,17 @@
 
                 <footer id="footer">
                     <center>
-                        <a href="#" onclick="alert('Guestbook is full! Please try again in 1999.')">
-                            <img src="https://web.archive.org/web/20091027045155im_/http://www.geocities.com/Heartland/Acres/2202/guestbook.gif" border="0">
+                        <a href="#" onclick="alert('The Guestbook is temporarily closed due to a toaster-related overflow error!')">
+                            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="100" border="0" alt="Sign Guestbook">
                         </a>
                         <br><br>
                         <b>VISITOR NUMBER:</b><br>
                         <div id="counter-box">000420</div>
-                        <br>
-                        <img src="https://web.archive.org/web/20091026210214im_/http://geocities.com/EnchantedForest/Cottage/1145/netscape_now.gif">
-                        <img src="https://web.archive.org/web/20091027060341im_/http://geocities.com/Heartland/Valley/2434/ie_static.gif">
                         <br><br>
-                        <font size="1">Copyright 2026 - No Right Click Allowed! (Just kidding)</font>
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1ZjR4N3p5Z3Z6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3o7TKMGpxVfFqi8Jm8/giphy.gif" width="80" alt="Netscape">
+                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHR3ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6bm9ndnZ6ZndidXp6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYW5uZXImY3Q9Zw/3o72FkiKQM4vWLTuuA/giphy.gif" width="80" alt="Construction">
+                        <br><br>
+                        <font size="1">Copyright 2026 - Optimized for Netscape Navigator</font>
                     </center>
                 </footer>
             </div>
@@ -199,14 +190,12 @@
         <div class="construction-bar"></div>
 
         <script>
-            // Visitor Counter Logic
             let count = localStorage.getItem('visitorCount') || 420;
             count = parseInt(count) + 1;
             localStorage.setItem('visitorCount', count);
             document.getElementById('counter-box').innerText = count.toString().padStart(6, '0');
 
-            // Scrolling Status Bar Message
-            let msg = " *** Welcome to the Toaster Zone... Tech is currently playing Vampire Therapist... Don't forget to sign the guestbook! *** ";
+            let msg = " *** Welcome to Tech's Lair... Don't feed the toasters... *** ";
             function scrollStatus() {
                 msg = msg.substring(1) + msg.substring(0, 1);
                 window.status = msg;
