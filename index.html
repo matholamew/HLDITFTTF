@@ -285,10 +285,12 @@
             }
 
             #jumpscare-img {
-                max-width: 90vw;
-                max-height: 70vh;
-                border: 10px solid red;
-                margin-bottom: 20px;
+                width: 100vw;       /* Fill the width of the viewport */
+                height: auto;       /* Keep aspect ratio */
+                max-height: 90vh;   /* Don't let it push the text off-screen */
+                object-fit: contain;
+                border: 5px solid red;
+                box-shadow: 0 0 50px red;
             }
 
             .jumpscare-text {
@@ -481,7 +483,7 @@
                 <p style="font-size: 10px;">Status: Fetching Directory listing...</p>
             </div>
         </div>
-
+        
         <div id="jumpscare-modal" onclick="closeJumpscare()">
             <div class="jumpscare-container">
                 <img id="jumpscare-img" src="https://media.howlongdoesittakefortechtofinish.com/images/jumpscare.jpg" alt="SCARE">
@@ -489,7 +491,7 @@
             </div>
         </div>
         
-        <audio id="jumpscare-sound" src="https://media.howlongdoesittakefortechtofinish.com/songs/jumpscare/jumpscare.mp3"></audio>
+        <audio id="jumpscare-sound" src="https://media.howlongdoesittakefortechtofinish.com/songs/jumpscare/jumpscare.mp3" preload="auto"></audio>
 
         <script>
             // --- TRAIL LOGIC ---
@@ -787,4 +789,5 @@
         </script>
     </body>
 </html>
+
 
