@@ -349,22 +349,7 @@
             }
 
             @keyframes spin { 100% { transform: rotate(360deg); } }
-
-            #bsod-screen {
-                display: none;
-                position: fixed;
-                top: 0; left: 0;
-                width: 100%; height: 100%;
-                background: #0000aa;
-                color: #ffffff;
-                padding: 50px;
-                font-family: "Lucida Console", Monaco, monospace;
-                z-index: 21000;
-                box-sizing: border-box;
-                font-size: 14px;
-                line-height: 1.6;
-                text-align: left;
-            }
+            
         </style>
     </head>
     <body>
@@ -508,19 +493,6 @@
                 <p><b>CONNECTING TO MASTER SITEMAP...</b></p>
                 <p style="font-size: 10px;">Status: Fetching Directory listing...</p>
             </div>
-        </div>
-
-        <div id="bsod-screen">
-            <p>A problem has been detected and Windows has been shut down to prevent damage to your computer.</p>
-            <p>DRIVER_IRQL_NOT_LESS_OR_EQUAL</p>
-            <p>If this is the first time you've seen this Stop error screen, restart your computer. If this screen appears again, follow these steps:</p>
-            <p>Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</p>
-            <p>Technical information:</p>
-            <p>*** STOP: 0x000000D1 (0x0000000C, 0x00000002, 0x00000000, 0xF86B5A89)</p>
-            <br>
-            <p>Beginning dump of physical memory...</p>
-            <p>Physical memory dump complete.</p>
-            <p>Contact your system administrator or technical support group for further assistance.</p>
         </div>
 
         <div id="jumpscare-modal" onclick="closeJumpscare()">
@@ -780,33 +752,20 @@
                 const sound = document.getElementById('jumpscare-sound');
                 
                 modal.style.display = 'flex';
-                sound.volume = 0.1; // Max volume for the scare
+                sound.volume = 0.1; 
                 sound.play().catch(e => console.log("Audio play blocked"));
                 
                 // Mute Winamp
                 pauseMusic();
-
-                // 3. Trigger BSOD after 3 seconds of screaming
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                    sound.pause();
-                    document.getElementById('bsod-screen').style.display = 'block';
-                    
-                    // 4. Restore everything after 5 seconds of "Blue Screen"
-                    setTimeout(() => {
-                        document.getElementById('bsod-screen').style.display = 'none';
-                        document.body.style.cursor = 'default';
-                    }, 5000);
-                }, 3000);
             }
 
             function closeJumpscare() {
-                // Keeping this for manual click-away if needed
                 const modal = document.getElementById('jumpscare-modal');
                 const sound = document.getElementById('jumpscare-sound');
                 modal.style.display = 'none';
                 sound.pause();
-                document.body.style.cursor = 'default';
+                sound.currentTime = 0;
+                document.body.style.cursor = 'default'; // Brings the cursor back!
             }
 
             audio.volume = 0.4;
@@ -816,5 +775,6 @@
         </script>
     </body>
 </html>
+
 
 
