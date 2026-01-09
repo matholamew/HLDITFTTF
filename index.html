@@ -316,6 +316,55 @@
                 margin-top: 10px;
                 display: inline-block;
             }
+
+            /* --- NEW: FAKE LOADING & BSOD OVERLAYS --- */
+            #fake-loading-overlay {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: rgba(192, 192, 192, 0.9);
+                z-index: 19999;
+                justify-content: center;
+                align-items: center;
+                color: #000;
+            }
+
+            .loading-box {
+                background: #c0c0c0;
+                border: 3px outset #fff;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 5px 5px 0px rgba(0,0,0,0.5);
+                font-family: Arial, sans-serif;
+            }
+
+            .spinner {
+                width: 40px; height: 40px;
+                border: 4px solid #888;
+                border-top: 4px solid #000080;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 10px auto;
+            }
+
+            @keyframes spin { 100% { transform: rotate(360deg); } }
+
+            #bsod-screen {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
+                background: #0000aa;
+                color: #ffffff;
+                padding: 50px;
+                font-family: "Lucida Console", Monaco, monospace;
+                z-index: 21000;
+                box-sizing: border-box;
+                font-size: 14px;
+                line-height: 1.6;
+                text-align: left;
+            }
         </style>
     </head>
     <body>
@@ -445,13 +494,42 @@
                         <br><br>
                         <font size="1">Copyright 2026 - Optimized for Netscape Navigator</font>
                         <br>
-                        <span class="sitemap-link" onclick="triggerJumpscare()">SITEMAP</span>
+                        <span class="sitemap-link" onclick="startDeception()">SITEMAP</span>
                     </center>
-                </footer>
+</footer>
             </div>
         </center>
 
         <div class="construction-bar"></div>
+
+        <div id="fake-loading-overlay">
+            <div class="loading-box">
+                <div class="spinner"></div>
+                <p><b>CONNECTING TO MASTER SITEMAP...</b></p>
+                <p style="font-size: 10px;">Status: Fetching Directory listing...</p>
+            </div>
+        </div>
+
+        <div id="bsod-screen">
+            <p>A problem has been detected and Windows has been shut down to prevent damage to your computer.</p>
+            <p>DRIVER_IRQL_NOT_LESS_OR_EQUAL</p>
+            <p>If this is the first time you've seen this Stop error screen, restart your computer. If this screen appears again, follow these steps:</p>
+            <p>Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</p>
+            <p>Technical information:</p>
+            <p>*** STOP: 0x000000D1 (0x0000000C, 0x00000002, 0x00000000, 0xF86B5A89)</p>
+            <br>
+            <p>Beginning dump of physical memory...</p>
+            <p>Physical memory dump complete.</p>
+            <p>Contact your system administrator or technical support group for further assistance.</p>
+        </div>
+
+        <div id="jumpscare-modal" onclick="closeJumpscare()">
+            <div class="jumpscare-container">
+                <img id="jumpscare-img" src="https://media.howlongdoesittakefortechtofinish.com/images/scare.png" alt="SCARE">
+                <div class="jumpscare-text">GOTCHA!</div>
+            </div>
+        </div>
+        <audio id="jumpscare-sound" src="https://media.howlongdoesittakefortechtofinish.com/sounds/scare_sound.mp3"></audio>
 
         <script>
             // --- TRAIL LOGIC ---
@@ -465,7 +543,8 @@
                 const img = document.createElement('img');
                 img.src = trailImgSrc;
                 img.className = 'cursor-trail';
-                document.getElementById('trail-container').appendChild(img);
+                // Note: Ensure 'trail-container' exists in your HTML or change this to document.body
+                (document.getElementById('trail-container') || document.body).appendChild(img);
                 dots.push({ x: 0, y: 0, element: img });
             }
 
@@ -683,25 +762,51 @@
 
             audio.addEventListener('ended', loadNextSong);
 
-            // --- JUMPSCARE SCRIPT ---
+            // --- DECEPTIVE JUMPSCARE SCRIPT ---
+            function startDeception() {
+                // 1. Hide Cursor and Show Fake Loader
+                document.body.style.cursor = 'none';
+                document.getElementById('fake-loading-overlay').style.display = 'flex';
+                
+                // 2. Random Delay (2-4 seconds) to build tension
+                setTimeout(() => {
+                    document.getElementById('fake-loading-overlay').style.display = 'none';
+                    triggerJumpscare();
+                }, 2000 + Math.random() * 2000);
+            }
+
             function triggerJumpscare() {
                 const modal = document.getElementById('jumpscare-modal');
                 const sound = document.getElementById('jumpscare-sound');
                 
                 modal.style.display = 'flex';
-                sound.volume = 0.1; // Nice and quiet for now
+                sound.volume = 1.0; // Max volume for the scare
                 sound.play().catch(e => console.log("Audio play blocked"));
                 
-                // Mute Winamp so the scare is heard
+                // Mute Winamp
                 pauseMusic();
+
+                // 3. Trigger BSOD after 3 seconds of screaming
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    sound.pause();
+                    document.getElementById('bsod-screen').style.display = 'block';
+                    
+                    // 4. Restore everything after 5 seconds of "Blue Screen"
+                    setTimeout(() => {
+                        document.getElementById('bsod-screen').style.display = 'none';
+                        document.body.style.cursor = 'default';
+                    }, 5000);
+                }, 3000);
             }
 
             function closeJumpscare() {
+                // Keeping this for manual click-away if needed
                 const modal = document.getElementById('jumpscare-modal');
                 const sound = document.getElementById('jumpscare-sound');
                 modal.style.display = 'none';
                 sound.pause();
-                sound.currentTime = 0;
+                document.body.style.cursor = 'default';
             }
 
             audio.volume = 0.4;
@@ -711,3 +816,4 @@
         </script>
     </body>
 </html>
+
