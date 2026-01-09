@@ -780,7 +780,7 @@
                 const sound = document.getElementById('jumpscare-sound');
                 
                 modal.style.display = 'flex';
-                sound.volume = 1.0; // Max volume for the scare
+                sound.volume = 0.1; // Max volume for the scare
                 sound.play().catch(e => console.log("Audio play blocked"));
                 
                 // Mute Winamp
@@ -816,4 +816,5 @@
         </script>
     </body>
 </html>
+
 
