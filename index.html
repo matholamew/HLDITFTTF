@@ -358,11 +358,11 @@
 
         <div id="jumpscare-modal" onclick="closeJumpscare()">
             <div class="jumpscare-container">
-                <img id="jumpscare-img" src="https://placehold.co/600x400/000000/ff0000?text=SCARE+IMAGE+HERE" alt="SCARY!">
+                <img id="jumpscare-img" src="https://media.howlongdoesittakefortechtofinish.com/images/jumpscare.jpg" alt="SCARY!">
                 <div class="jumpscare-text">GOTCHA!</div>
             </div>
         </div>
-        <audio id="jumpscare-sound" src="https://www.soundboard.com/handler/DownLoadTrack.ashx?cliptitle=Scream+Loud&filename=mt/MTI0NTE4OTEyNDUxOTQy_77XInmN4Y0Y.mp3"></audio>
+        <audio id="jumpscare-sound" src="https://media.howlongdoesittakefortechtofinish.com/songs/jumpscare/jumpscare.mp3></audio>
 
         <div id="winamp-wrapper">
             <div id="playlist-window" class="draggable-window">
@@ -755,7 +755,7 @@
                 const sound = document.getElementById('jumpscare-sound');
                 
                 modal.style.display = 'flex';
-                sound.volume = 0.1; 
+                sound.volume = 1.0; 
                 sound.play().catch(e => console.log("Audio play blocked"));
                 
                 // Mute Winamp
@@ -778,6 +778,7 @@
         </script>
     </body>
 </html>
+
 
 
 
